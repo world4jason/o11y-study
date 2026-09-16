@@ -2,7 +2,7 @@
 
 讀書會用的 observability / instrumentation study notes and presentation。
 
-目前主題：**《關鍵迭代：可信賴的線上對照實驗》第 13 章〈工具化日誌記錄〉：從當時的 instrumentation 到 2026 的 Web / App / OpenTelemetry / LLM / Agent Observability。**
+目前主題：**《關鍵迭代：可信賴的線上對照實驗》第 13 章〈工具化日誌記錄〉：從書中的 client / server instrumentation，走到 2026 的 App、推薦系統、OpenTelemetry、LLM / Agent Observability。**
 
 ## Chapter 13 presentation
 
@@ -18,15 +18,21 @@
 
 ### 敘事主線
 
-1. 先忠實還原書中第 13 章：client / server instrumentation、multi-source join、logging quality。
-2. 補上 2019–2026 的時代背景：OpenTracing + OpenCensus → OpenTelemetry → CNCF Graduated。
-3. 對照今天的 Web RUM / Core Web Vitals、App user-perceived performance、distributed tracing。
-4. 延伸到 LLM / Agent：GenAI spans、agent workflow tracing、MCP。
-5. 最後補上 AI 系統特有的差異：**Observability 回答 what happened；Evaluation 回答 was it good。**
+1. **先把書講完整**：為什麼 instrumentation 是實驗地基、client-side、server-side、multi-source join、instrumentation culture。
+2. **補時代背景**：2020 並不是只有 logging；APM / tracing 已存在，但 OpenTelemetry 正在把 fragmented ecosystem 標準化。
+3. **翻成 App / 推薦系統語言**：product events、request / trace、experiment、model version、impression / click attribution 如何串起來。
+4. **再看 2026 工具箱**：PostHog、Firebase、Sentry、Countly、Grafana/Faro/Loki/Tempo/Mimir、Elastic/Kibana、SigNoz、ClickStack/HyperDX。
+5. **最後延伸到 LLM / Agent**：prompt / token / retrieval / tool / workflow tracing，以及 Observability 與 Evaluation 的差異。
+
+### 簡報設計原則
+
+- 每張只留一個主要訊息，避免 logo wall 或大段文字。
+- 工具細節、限制與講法放在 speaker notes（按 `N`）。
+- 容易變動的官方資料與網址集中在 [`SOURCES.md`](./SOURCES.md)，不塞滿畫面。
 
 ### 資料來源
 
-簡報最後一頁列出官方 / 一手來源，主要包含 OpenTelemetry、CNCF、web.dev、Firebase / Android Developers、OpenAI Agents SDK、Langfuse。GenAI / Agent / MCP semantic conventions 目前仍有 Development 狀態，簡報內已明確標示。
+書中內容以 Chapter 13 pp.153–156 為基礎；2026 的工具與做法是另外查證的外部更新。完整官方來源見 [`SOURCES.md`](./SOURCES.md)。
 
 ## GitHub Pages
 
