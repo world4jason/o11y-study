@@ -4,10 +4,10 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Chapter 13 Instrumentation → Observability 2026</title>
-<meta name="description" content="讀書會：先講《關鍵迭代》第 13 章原書內容，再對照 2026 的 App / Recommendation / OpenTelemetry / LLM / Agent Observability。" />
+<meta name="description" content="讀書會：先講《關鍵迭代》第 13 章原書內容，再對照 2026 的 Web / App / Recommendation / OpenTelemetry / LLM / Agent Observability。" />
 <style>
-:root{--bg:#08111f;--panel:#0f1d31;--panel2:#13243a;--text:#f4f7fb;--muted:#aab9ca;--cyan:#67e8f9;--blue:#60a5fa;--green:#6ee7b7;--amber:#fcd34d;--rose:#fda4af;--purple:#c4b5fd;--line:rgba(255,255,255,.14);--shadow:0 22px 60px rgba(0,0,0,.32);--radius:22px}
-*{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;background:var(--bg);color:var(--text);font-family:ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans TC",sans-serif}body{overflow:hidden}a{color:var(--cyan)}code{font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace}.deck{height:100vh;position:relative}.slide{display:none;position:absolute;inset:0;padding:clamp(28px,4vw,68px);overflow:auto;background:radial-gradient(circle at 86% 12%,rgba(96,165,250,.12),transparent 30%),radial-gradient(circle at 10% 92%,rgba(103,232,249,.07),transparent 28%),var(--bg)}.slide.active{display:block}.content{max-width:1240px;margin:0 auto;min-height:calc(100vh - clamp(56px,8vw,136px));display:flex;flex-direction:column;justify-content:center}.eyebrow{color:var(--cyan);text-transform:uppercase;letter-spacing:.14em;font-size:13px;font-weight:800;margin-bottom:14px}h1{font-size:clamp(42px,7vw,84px);line-height:1.02;letter-spacing:-.045em;margin:0 0 22px}h2{font-size:clamp(34px,5vw,62px);line-height:1.08;letter-spacing:-.035em;margin:0 0 22px}h3{font-size:clamp(20px,2.25vw,28px);margin:0 0 9px}p,li{font-size:clamp(17px,1.55vw,22px);line-height:1.5}p{margin:7px 0 14px}.lead{color:var(--muted);font-size:clamp(20px,2.3vw,30px);max-width:1000px}.small,.foot{color:var(--muted);font-size:13px;line-height:1.5}.muted{color:var(--muted)}.tag,.pill{display:inline-flex;align-items:center;padding:7px 11px;border:1px solid var(--line);border-radius:999px;color:var(--muted);font-size:13px;margin:4px 5px 4px 0;background:rgba(255,255,255,.035)}.pill.oss{color:#b7f7dc;border-color:rgba(110,231,183,.35)}.pill.free{color:#dbeafe;border-color:rgba(96,165,250,.35)}.grid2,.grid3,.grid4{display:grid;gap:18px;margin-top:22px}.grid2{grid-template-columns:repeat(2,minmax(0,1fr))}.grid3{grid-template-columns:repeat(3,minmax(0,1fr))}.grid4{grid-template-columns:repeat(4,minmax(0,1fr))}.card{background:linear-gradient(180deg,rgba(255,255,255,.055),rgba(255,255,255,.025));border:1px solid var(--line);border-radius:var(--radius);padding:22px;box-shadow:var(--shadow)}.card p,.card li{font-size:clamp(15px,1.22vw,18px)}.accent-cyan{border-top:3px solid var(--cyan)}.accent-blue{border-top:3px solid var(--blue)}.accent-green{border-top:3px solid var(--green)}.accent-amber{border-top:3px solid var(--amber)}.accent-rose{border-top:3px solid var(--rose)}.accent-purple{border-top:3px solid var(--purple)}.quote{border-left:4px solid var(--cyan);padding:4px 0 4px 22px;margin:20px 0;font-size:clamp(22px,2.5vw,33px);line-height:1.4;max-width:1000px}.big{font-size:clamp(28px,3.8vw,52px);font-weight:850;line-height:1.2;letter-spacing:-.025em;max-width:1100px}.flow{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-top:24px}.node{border:1px solid var(--line);border-radius:16px;padding:13px 17px;background:var(--panel);min-width:120px;text-align:center;font-weight:750}.arr{color:var(--cyan);font-size:25px}.diagram{border:1px solid var(--line);border-radius:var(--radius);background:rgba(255,255,255,.025);padding:24px;margin-top:20px}.stack{display:grid;gap:9px;max-width:900px}.layer{border:1px solid var(--line);border-radius:14px;padding:12px 15px;display:flex;justify-content:space-between;gap:18px;align-items:center;background:var(--panel)}.layer span:last-child{color:var(--muted);font-size:14px}.minirow{display:grid;grid-template-columns:180px 1fr;gap:14px;align-items:center;margin:10px 0}.minirow .k{color:var(--muted);font-size:14px;text-align:right}.bar{min-height:34px;border-radius:10px;padding:7px 11px;background:linear-gradient(90deg,rgba(103,232,249,.9),rgba(96,165,250,.7));color:#06131e;font-weight:850}.bar.green{background:linear-gradient(90deg,rgba(110,231,183,.95),rgba(103,232,249,.72))}.bar.amber{background:linear-gradient(90deg,rgba(252,211,77,.95),rgba(251,146,60,.75))}.bar.purple{background:linear-gradient(90deg,rgba(196,181,253,.95),rgba(96,165,250,.72))}.compare{width:100%;border-collapse:collapse;margin-top:18px;border:1px solid var(--line);border-radius:18px;overflow:hidden}.compare th,.compare td{padding:12px 14px;border-bottom:1px solid var(--line);vertical-align:top;text-align:left;font-size:clamp(14px,1.15vw,17px)}.compare th{color:var(--cyan);background:rgba(255,255,255,.045)}.compare tr:last-child td{border-bottom:0}.tool{display:flex;flex-direction:column;gap:8px}.tool .name{font-weight:900;font-size:23px}.tool .use{color:var(--muted);font-size:16px}.tool .q{font-size:14px;color:var(--cyan)}.callout{margin-top:20px;border:1px solid rgba(252,211,77,.35);background:rgba(252,211,77,.08);border-radius:16px;padding:14px 17px;color:#fde68a;font-size:clamp(15px,1.3vw,18px)}.split{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:22px}.answer{padding:24px;border-radius:var(--radius);border:1px solid var(--line)}.answer .q{font-size:16px;color:var(--muted);margin-bottom:7px}.answer .a{font-size:clamp(27px,3vw,44px);font-weight:900;line-height:1.15}.section{background:radial-gradient(circle at 50% 50%,rgba(103,232,249,.13),transparent 36%),var(--bg)}.section .content{align-items:flex-start}.section h1{max-width:1000px}.controls{position:fixed;z-index:20;right:18px;bottom:16px;display:flex;align-items:center;gap:8px;background:rgba(5,12,23,.84);backdrop-filter:blur(12px);border:1px solid var(--line);border-radius:999px;padding:7px 9px}.counter{color:var(--muted);font-size:13px;min-width:54px;text-align:center}button{border:0;color:var(--text);background:transparent;font:inherit;cursor:pointer;padding:6px 10px;border-radius:999px}button:hover{background:rgba(255,255,255,.08)}.progress{position:fixed;bottom:0;left:0;height:3px;background:var(--cyan);z-index:30;transition:width .2s ease}.note-toggle{position:fixed;left:18px;bottom:16px;z-index:20;color:var(--muted);border:1px solid var(--line);background:rgba(5,12,23,.84);border-radius:999px;padding:8px 12px;font-size:12px}.speaker-note{display:none;position:fixed;left:18px;right:18px;bottom:58px;max-height:38vh;overflow:auto;z-index:50;background:#111827;border:1px solid var(--line);border-radius:16px;padding:16px 18px;box-shadow:var(--shadow);color:#dbeafe}.speaker-note.show{display:block}.speaker-note p,.speaker-note li{font-size:15px;line-height:1.5}.kbd{border:1px solid var(--line);background:rgba(255,255,255,.06);padding:1px 7px;border-radius:7px;font-size:12px}@media(max-width:900px){.grid3,.grid4{grid-template-columns:1fr 1fr}.minirow{grid-template-columns:130px 1fr}}@media(max-width:650px){.grid2,.grid3,.grid4,.split{grid-template-columns:1fr}.minirow{grid-template-columns:1fr}.minirow .k{text-align:left}.compare{display:block;overflow:auto}}@media print{body{overflow:visible;background:#fff;color:#111}.deck{height:auto}.slide{display:block!important;position:relative;min-height:100vh;page-break-after:always;background:#fff;color:#111}.card,.diagram,.answer,.layer,.node{box-shadow:none;background:#fff;border-color:#bbb}.muted,.lead,.small,.foot,.layer span:last-child{color:#555!important}.controls,.progress,.note-toggle,.speaker-note{display:none!important}}
+:root{--bg:#08111f;--panel:#0f1d31;--text:#f4f7fb;--muted:#aab9ca;--cyan:#67e8f9;--blue:#60a5fa;--green:#6ee7b7;--amber:#fcd34d;--rose:#fda4af;--purple:#c4b5fd;--line:rgba(255,255,255,.14);--shadow:0 22px 60px rgba(0,0,0,.32);--radius:22px}
+*{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;background:var(--bg);color:var(--text);font-family:ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans TC",sans-serif}body{overflow:hidden}a{color:var(--cyan)}code,pre{font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace}.deck{height:100vh;position:relative}.slide{display:none;position:absolute;inset:0;padding:clamp(28px,4vw,68px);overflow:auto;background:radial-gradient(circle at 86% 12%,rgba(96,165,250,.12),transparent 30%),radial-gradient(circle at 10% 92%,rgba(103,232,249,.07),transparent 28%),var(--bg)}.slide.active{display:block}.content{max-width:1240px;margin:0 auto;min-height:calc(100vh - clamp(56px,8vw,136px));display:flex;flex-direction:column;justify-content:center}.eyebrow{color:var(--cyan);text-transform:uppercase;letter-spacing:.14em;font-size:13px;font-weight:800;margin-bottom:14px}h1{font-size:clamp(42px,7vw,84px);line-height:1.02;letter-spacing:-.045em;margin:0 0 22px}h2{font-size:clamp(34px,5vw,62px);line-height:1.08;letter-spacing:-.035em;margin:0 0 22px}h3{font-size:clamp(20px,2.2vw,28px);margin:0 0 9px}p,li{font-size:clamp(17px,1.52vw,22px);line-height:1.48}p{margin:7px 0 14px}.lead{color:var(--muted);font-size:clamp(20px,2.3vw,30px);max-width:1000px}.small,.foot{color:var(--muted);font-size:13px;line-height:1.5}.muted{color:var(--muted)}.tag,.pill{display:inline-flex;align-items:center;padding:7px 11px;border:1px solid var(--line);border-radius:999px;color:var(--muted);font-size:13px;margin:4px 5px 4px 0;background:rgba(255,255,255,.035)}.pill.oss{color:#b7f7dc;border-color:rgba(110,231,183,.35)}.pill.free{color:#dbeafe;border-color:rgba(96,165,250,.35)}.grid2,.grid3,.grid4{display:grid;gap:18px;margin-top:22px}.grid2{grid-template-columns:repeat(2,minmax(0,1fr))}.grid3{grid-template-columns:repeat(3,minmax(0,1fr))}.grid4{grid-template-columns:repeat(4,minmax(0,1fr))}.card{background:linear-gradient(180deg,rgba(255,255,255,.055),rgba(255,255,255,.025));border:1px solid var(--line);border-radius:var(--radius);padding:22px;box-shadow:var(--shadow)}.card p,.card li{font-size:clamp(15px,1.2vw,18px)}.accent-cyan{border-top:3px solid var(--cyan)}.accent-blue{border-top:3px solid var(--blue)}.accent-green{border-top:3px solid var(--green)}.accent-amber{border-top:3px solid var(--amber)}.accent-rose{border-top:3px solid var(--rose)}.accent-purple{border-top:3px solid var(--purple)}.quote{border-left:4px solid var(--cyan);padding:4px 0 4px 22px;margin:20px 0;font-size:clamp(22px,2.5vw,33px);line-height:1.4;max-width:1000px}.big{font-size:clamp(28px,3.8vw,52px);font-weight:850;line-height:1.2;letter-spacing:-.025em;max-width:1100px}.flow{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-top:24px}.node{border:1px solid var(--line);border-radius:16px;padding:13px 17px;background:var(--panel);min-width:120px;text-align:center;font-weight:750}.arr{color:var(--cyan);font-size:25px}.diagram{border:1px solid var(--line);border-radius:var(--radius);background:rgba(255,255,255,.025);padding:24px;margin-top:20px}.stack{display:grid;gap:9px;max-width:930px}.layer{border:1px solid var(--line);border-radius:14px;padding:12px 15px;display:flex;justify-content:space-between;gap:18px;align-items:center;background:var(--panel)}.layer span:last-child{color:var(--muted);font-size:14px}.compare{width:100%;border-collapse:collapse;margin-top:18px;border:1px solid var(--line);border-radius:18px;overflow:hidden}.compare th,.compare td{padding:11px 13px;border-bottom:1px solid var(--line);vertical-align:top;text-align:left;font-size:clamp(14px,1.08vw,16px)}.compare th{color:var(--cyan);background:rgba(255,255,255,.045)}.compare tr:last-child td{border-bottom:0}.tool{display:flex;flex-direction:column;gap:8px}.tool .name{font-weight:900;font-size:23px}.tool .use{color:var(--muted);font-size:16px}.callout{margin-top:20px;border:1px solid rgba(252,211,77,.35);background:rgba(252,211,77,.08);border-radius:16px;padding:14px 17px;color:#fde68a;font-size:clamp(15px,1.25vw,18px)}.split{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:22px}.answer{padding:24px;border-radius:var(--radius);border:1px solid var(--line)}.answer .q{font-size:16px;color:var(--muted);margin-bottom:7px}.answer .a{font-size:clamp(27px,3vw,44px);font-weight:900;line-height:1.15}.section{background:radial-gradient(circle at 50% 50%,rgba(103,232,249,.13),transparent 36%),var(--bg)}.section .content{align-items:flex-start}.section h1{max-width:1000px}.trace{font-size:clamp(15px,1.25vw,19px);line-height:1.5;white-space:pre-wrap;margin:0}.metric{font-size:clamp(28px,3vw,42px);font-weight:900}.controls{position:fixed;z-index:20;right:18px;bottom:16px;display:flex;align-items:center;gap:8px;background:rgba(5,12,23,.84);backdrop-filter:blur(12px);border:1px solid var(--line);border-radius:999px;padding:7px 9px}.counter{color:var(--muted);font-size:13px;min-width:54px;text-align:center}button{border:0;color:var(--text);background:transparent;font:inherit;cursor:pointer;padding:6px 10px;border-radius:999px}button:hover{background:rgba(255,255,255,.08)}.progress{position:fixed;bottom:0;left:0;height:3px;background:var(--cyan);z-index:30;transition:width .2s ease}.note-toggle{position:fixed;left:18px;bottom:16px;z-index:20;color:var(--muted);border:1px solid var(--line);background:rgba(5,12,23,.84);border-radius:999px;padding:8px 12px;font-size:12px}.speaker-note{display:none;position:fixed;left:18px;right:18px;bottom:58px;max-height:38vh;overflow:auto;z-index:50;background:#111827;border:1px solid var(--line);border-radius:16px;padding:16px 18px;box-shadow:var(--shadow);color:#dbeafe}.speaker-note.show{display:block}.speaker-note p,.speaker-note li{font-size:15px;line-height:1.5}.kbd{border:1px solid var(--line);background:rgba(255,255,255,.06);padding:1px 7px;border-radius:7px;font-size:12px}@media(max-width:900px){.grid3,.grid4{grid-template-columns:1fr 1fr}}@media(max-width:650px){.grid2,.grid3,.grid4,.split{grid-template-columns:1fr}.compare{display:block;overflow:auto}}@media print{body{overflow:visible;background:#fff;color:#111}.deck{height:auto}.slide{display:block!important;position:relative;min-height:100vh;page-break-after:always;background:#fff;color:#111}.card,.diagram,.answer,.layer,.node{box-shadow:none;background:#fff;border-color:#bbb}.muted,.lead,.small,.foot,.layer span:last-child{color:#555!important}.controls,.progress,.note-toggle,.speaker-note{display:none!important}}
 </style>
 </head>
 <body>
@@ -16,226 +16,175 @@
 <section class="slide active" data-title="Title"><div class="content">
 <div class="eyebrow">Book Club · Chapter 13</div>
 <h1>工具化日誌記錄<br><span style="color:var(--cyan)">→ Observability 2026</span></h1>
-<p class="lead">先讀懂原書 13.1–13.3，再對照 App、推薦系統、OpenTelemetry、LLM 與 Agent 的今天做法。</p>
+<p class="lead">先讀懂原書 13.1–13.3，再看 Web、App、推薦系統、OpenTelemetry、LLM 與 Agent 的今天做法。</p>
 <div><span class="tag">App</span><span class="tag">BE / DE / MLE</span><span class="tag">Recommendation</span><span class="tag">O11y</span></div>
-</div><aside class="speaker-note">今天分成兩段。第一段只講原書，按照 13.1、13.2、13.3 的順序；第二段才補 2026 的工具與實作。</aside></section>
+</div><aside class="speaker-note">分成兩段：前半段只講書；後半段才做 2026 的延伸。</aside></section>
 
 <section class="slide section" data-title="Book"><div class="content">
 <div class="eyebrow">Part I · 原書</div><h1>Chapter 13<br>工具化日誌記錄</h1>
 <div class="flow"><div class="node">13.1 Client / Server</div><div class="arr">→</div><div class="node">13.2 多源日誌</div><div class="arr">→</div><div class="node">13.3 Logging culture</div></div>
-</div><aside class="speaker-note">這一段不補工具、不先談 OTel。先把書的論點和限制講完整。</aside></section>
+</div><aside class="speaker-note">這一段不補工具、不先談 OTel。</aside></section>
 
 <section class="slide" data-title="13.1 Overview"><div class="content">
 <div class="eyebrow">13.1 · Client 與 Server 的工具化日誌</div><h2>兩個視角，回答不同問題</h2>
-<div class="grid2">
-<div class="card accent-cyan"><h3>Client</h3><p>使用者看到了什麼、做了什麼，以及實際體感。</p></div>
-<div class="card accent-blue"><h3>Server</h3><p>系統內部發生了什麼，以及為什麼產生這個結果。</p></div>
-</div>
-<div class="quote">Client 比較接近 user experience；Server 比較接近 system behavior。</div>
-<p class="foot">原書 13.1</p>
-</div><aside class="speaker-note">原書先做的就是這個區分。Client 不是 Server 的替代品；兩邊各自看得到對方看不到的資訊。</aside></section>
+<div class="grid2"><div class="card accent-cyan"><h3>Client</h3><p>使用者看到了什麼、做了什麼，以及實際體感。</p></div><div class="card accent-blue"><h3>Server</h3><p>系統內部發生了什麼，以及為什麼產生這個結果。</p></div></div>
+<div class="quote">Client 比較接近 user experience；Server 比較接近 system behavior。</div><p class="foot">原書 13.1</p>
+</div><aside class="speaker-note">Client 不是 Server 的替代品；兩邊各自看得到對方看不到的資訊。</aside></section>
 
 <section class="slide" data-title="13.1 Client"><div class="content">
 <div class="eyebrow">13.1 · Client-side</div><h2>Client 要記三類事情</h2>
-<div class="grid3">
-<div class="card accent-cyan"><h3>操作</h3><p>click · hover · scroll<br>何時發生、是否需要 server round-trip</p></div>
-<div class="card accent-green"><h3>效能</h3><p>頁面多久顯示<br>多久可以互動</p></div>
-<div class="card accent-rose"><h3>錯誤</h3><p>JavaScript error<br>client crash</p></div>
-</div>
-<p class="foot">原書 13.1</p>
-</div><aside class="speaker-note">這頁維持原書的分類：使用者操作、性能、錯誤與崩潰。App 場景的對照放到後半段再講。</aside></section>
+<div class="grid3"><div class="card accent-cyan"><h3>操作</h3><p>click · hover · scroll<br>何時發生、是否需要 server round-trip</p></div><div class="card accent-green"><h3>效能</h3><p>頁面多久顯示<br>多久可以互動</p></div><div class="card accent-rose"><h3>錯誤</h3><p>JavaScript error<br>client crash</p></div></div><p class="foot">原書 13.1</p>
+</div><aside class="speaker-note">這頁維持原書分類。App 的現代對照放到 Part II。</aside></section>
 
 <section class="slide" data-title="13.1 Client Limits"><div class="content">
 <div class="eyebrow">13.1 · Client-side 的限制</div><h2>Client log 本身也可能<strong style="color:var(--amber)">不可靠</strong></h2>
-<div class="grid4">
-<div class="card"><h3>成本</h3><p>CPU、network、battery</p></div>
-<div class="card"><h3>Beacon loss</h3><p>換頁前可能還沒送完</p></div>
-<div class="card"><h3>Trade-off</h3><p>強制同步送出會增加 latency</p></div>
-<div class="card"><h3>Clock</h3><p>client 時鐘可能被修改或偏移</p></div>
-</div>
-<div class="callout">不要直接拿 client timestamp 與 server timestamp 做時間差。</div>
-<p class="foot">原書 13.1</p>
-</div><aside class="speaker-note">這是 13.1 很重要、目前舊版簡報壓太快的地方。作者其實花不少篇幅說明 client telemetry 的成本、丟失與 clock skew。</aside></section>
+<div class="grid4"><div class="card"><h3>成本</h3><p>CPU、network、battery</p></div><div class="card"><h3>Beacon loss</h3><p>換頁前可能還沒送完</p></div><div class="card"><h3>Trade-off</h3><p>強制同步送出會增加 latency</p></div><div class="card"><h3>Clock</h3><p>client 時鐘可能被修改或偏移</p></div></div>
+<div class="callout">不要直接拿 client timestamp 與 server timestamp 做時間差。</div><p class="foot">原書 13.1</p>
+</div><aside class="speaker-note">作者花不少篇幅講 client telemetry 的成本、丟失與 clock skew。</aside></section>
 
 <section class="slide" data-title="13.1 Server"><div class="content">
 <div class="eyebrow">13.1 · Server-side</div><h2>Server 關心的是<strong style="color:var(--blue)">內部行為</strong></h2>
-<div class="grid3">
-<div class="card accent-blue"><h3>Performance</h3><p>response latency<br>哪個 component 最慢<br>p99</p></div>
-<div class="card accent-cyan"><h3>Response rate</h3><p>收到多少 request<br>提供多少 response<br>retry 如何處理</p></div>
-<div class="card accent-rose"><h3>System info</h3><p>exception / error<br>cache hit rate</p></div>
-</div>
-<div class="callout">Server log 比較能描述系統內部原因，而且通常較少受 client network 影響。</div>
-<p class="foot">原書 13.1</p>
-</div><aside class="speaker-note">原書也舉搜尋排序分數、實際 server / data center 等例子，說明 server side 可以記錄「為什麼」產生某個結果。不過 server 之間仍要注意 clock synchronization。</aside></section>
+<div class="grid3"><div class="card accent-blue"><h3>Performance</h3><p>response latency<br>哪個 component 最慢<br>p99</p></div><div class="card accent-cyan"><h3>Response rate</h3><p>request / response volume<br>retry 如何處理</p></div><div class="card accent-rose"><h3>System info</h3><p>exception / error<br>cache hit rate</p></div></div>
+<div class="callout">Server log 更容易描述系統內部原因，通常也較少受 client network 影響。</div><p class="foot">原書 13.1</p>
+</div><aside class="speaker-note">原書還舉排序分數、server/data center 等例子。不過 server 之間仍要做 clock synchronization。</aside></section>
 
 <section class="slide" data-title="13.2"><div class="content">
-<div class="eyebrow">13.2 · 處理多源日誌</div><h2>資料來自不同地方，<br>但下游必須能<strong style="color:var(--green)">合併</strong></h2>
-<div class="grid3">
-<div class="card"><h3>不同 Client</h3><p>browser · mobile</p></div>
-<div class="card"><h3>Server</h3><p>backend / service logs</p></div>
-<div class="card"><h3>不同 user state</h3><p>opt-in · opt-out 等狀態</p></div>
-</div>
-<div class="flow"><div class="node">共同 identifier</div><div class="arr">+</div><div class="node">共同欄位格式</div><div class="arr">→</div><div class="node">下游 join / analysis</div></div>
-<p class="foot">原書 13.2</p>
-</div><aside class="speaker-note">作者要求一個能表示同一 user / randomization unit 的 join key；必要時還需要 event-level join key。共享格式包含 timestamp、country/region、language、platform 等 common fields。</aside></section>
+<div class="eyebrow">13.2 · 處理多源日誌</div><h2>資料來自不同地方，<br>下游必須能<strong style="color:var(--green)">合併</strong></h2>
+<div class="grid3"><div class="card"><h3>不同 Client</h3><p>browser · mobile</p></div><div class="card"><h3>Server</h3><p>backend / service logs</p></div><div class="card"><h3>不同 user state</h3><p>opt-in · opt-out 等狀態</p></div></div>
+<div class="flow"><div class="node">共同 identifier</div><div class="arr">+</div><div class="node">共同欄位格式</div><div class="arr">→</div><div class="node">join / analysis</div></div><p class="foot">原書 13.2</p>
+</div><aside class="speaker-note">必要時還需要 event-level join key；common fields 包含 timestamp、country/region、language、platform。</aside></section>
 
 <section class="slide" data-title="13.3"><div class="content">
 <div class="eyebrow">13.3 · 工具化日誌記錄的文化</div><h2>Logging 不是附加工作，<br>而是上線條件</h2>
-<div class="grid3">
-<div class="card accent-amber"><h3>沒有 log，不上線</h3><p>新產品 / 新功能沒有觀測能力就不應 release。</p></div>
-<div class="card accent-cyan"><h3>開發時一起做</h3><p>工程師在提交前就加上必要 instrumentation 並測試。</p></div>
-<div class="card accent-rose"><h3>監控 log 品質</h3><p>事件數、關鍵欄位、timestamp、異常值也要被檢查。</p></div>
-</div>
-<p class="foot">原書 13.3</p>
-</div><aside class="speaker-note">作者用飛機儀表的比喻：缺少 logging 就像盲飛。這一段其實非常接近今天的 Definition of Done / release gate / telemetry quality。</aside></section>
+<div class="grid3"><div class="card accent-amber"><h3>沒有 log，不上線</h3><p>新產品 / 功能要先有觀測能力。</p></div><div class="card accent-cyan"><h3>開發時一起做</h3><p>提交前加入 instrumentation 並測試。</p></div><div class="card accent-rose"><h3>監控 log 品質</h3><p>事件數、欄位、timestamp、異常值也要檢查。</p></div></div><p class="foot">原書 13.3</p>
+</div><aside class="speaker-note">作者用飛機儀表比喻：缺少 logging 就像盲飛。</aside></section>
 
 <section class="slide section" data-title="Now"><div class="content">
 <div class="eyebrow">Part II · 2026</div><h1>同一批問題，<br>今天怎麼做？</h1>
-<p class="lead">下面才開始加入現代工具、標準與 App / Recommendation / AI 的實務。</p>
-</div><aside class="speaker-note">這裡才切到外部研究與現代實務。前面八張都以原書內容為主。</aside></section>
+<p class="lead">先對照 Web / App / Backend，再進工具、推薦系統、LLM 與 Agent。</p>
+</div><aside class="speaker-note">從這張開始才是外部研究與 2026 實務。</aside></section>
 
-<section class="slide" data-title="Mapping"><div class="content">
-<div class="eyebrow">2026 · 問題沒有變，訊號變多了</div><h2>原書概念 → 現代 O11y 語言</h2>
-<table class="compare"><thead><tr><th>原書</th><th>今天常見做法</th></tr></thead><tbody>
-<tr><td>Client 操作 / 體感</td><td>Product Events · RUM · Session Replay · Crash / ANR</td></tr>
-<tr><td>Server latency / error / component</td><td>Logs · Metrics · Distributed Traces</td></tr>
-<tr><td>共同 join key</td><td>trace_id / span_id + session / request / impression / experiment IDs</td></tr>
-<tr><td>Logging culture</td><td>Telemetry in DoD · SLO · release gate · data-quality checks</td></tr>
+<section class="slide" data-title="2026 Summary"><div class="content">
+<div class="eyebrow">2026 · Product Telemetry + Observability + AI</div><h2>今天大概已經變成這樣</h2>
+<table class="compare"><thead><tr><th>面向</th><th>書中的做法</th><th>現在通常會做</th></tr></thead><tbody>
+<tr><td>Web 行為</td><td>click / hover / scroll</td><td>Product Events + RUM + Session / Navigation</td></tr>
+<tr><td>Web 效能</td><td>page display / interaction</td><td>LCP / INP / CLS + route / soft navigation</td></tr>
+<tr><td>App</td><td>client log / crash</td><td>startup · render · network · crash · ANR · lifecycle</td></tr>
+<tr><td>Backend</td><td>latency / p99 / error / cache</td><td>Metrics + Logs + Distributed Traces</td></tr>
+<tr><td>跨服務</td><td>共同 join key</td><td>trace_id / span_id + W3C Trace Context</td></tr>
+<tr><td>LLM / Agent</td><td>書中沒有</td><td>model / token / TTFT / retrieval / tool / handoff / eval</td></tr>
 </tbody></table>
-</div><aside class="speaker-note">這張是橋樑。不是說書過時，而是把作者的問題翻成今天的術語。</aside></section>
+</div><aside class="speaker-note">這張當全景圖，後面三張把 Web / App / Backend 展開。</aside></section>
 
-<section class="slide" data-title="App tools"><div class="content">
-<div class="eyebrow">App / Product</div><h2>Client-side 現在常用什麼？</h2>
-<div class="grid4">
-<div class="card tool accent-cyan"><div class="name">PostHog</div><div class="use">analytics · replay · flags · experiments</div><span class="pill free">free tier</span></div>
-<div class="card tool accent-blue"><div class="name">Firebase</div><div class="use">Analytics · Performance · Crashlytics</div><span class="pill free">no-cost products</span></div>
-<div class="card tool accent-rose"><div class="name">Sentry</div><div class="use">errors · performance · mobile replay</div></div>
-<div class="card tool accent-green"><div class="name">Countly Lite</div><div class="use">mobile / web / desktop product analytics</div><span class="pill oss">OSS · self-host</span></div>
-</div>
-</div><aside class="speaker-note">對 native App，Firebase 很自然；PostHog 偏 product analytics / experiments；Sentry 偏 error/perf/replay；Countly Lite 是 OSS/self-host product analytics。工具可能重疊，但主要問題域不同。</aside></section>
+<section class="slide" data-title="Web Now"><div class="content">
+<div class="eyebrow">Web · Real User Monitoring</div><h2>現在不只是「記 click」</h2>
+<div class="grid3"><div class="card accent-green"><div class="metric">LCP ≤ 2.5s</div><p>主要內容多久顯示</p></div><div class="card accent-cyan"><div class="metric">INP ≤ 200ms</div><p>互動後多久有畫面反應</p></div><div class="card accent-purple"><div class="metric">CLS ≤ 0.1</div><p>頁面會不會亂跳</p></div></div>
+<div class="callout">看真實使用者資料的 p75；SPA 還要處理 route / soft navigation，而不是只量第一次 page load。</div>
+</div><aside class="speaker-note">Core Web Vitals 目前仍是 LCP、INP、CLS，門檻看第 75 百分位。Chrome 151 在 2026 加入 soft-navigation APIs，讓 SPA route transition 能更像獨立 navigation 來量。</aside></section>
 
-<section class="slide" data-title="Frontend"><div class="content">
-<div class="eyebrow">Web / H5 / WebView</div><h2>Frontend tracking 現在多了<strong style="color:var(--cyan)">RUM + Replay</strong></h2>
-<div class="grid4">
-<div class="card"><h3>Events</h3><p>view · click · funnel</p></div>
-<div class="card"><h3>RUM</h3><p>真實 device / network / release</p></div>
-<div class="card"><h3>Web Vitals</h3><p>LCP · INP · CLS</p></div>
-<div class="card"><h3>Replay</h3><p>還原 user flow</p></div>
-</div>
-<div class="flow"><div class="node">Grafana Faro</div><div class="node">OpenReplay</div><div class="node">PostHog</div><div class="node">Sentry</div></div>
-</div><aside class="speaker-note">Faro 是 OSS browser RUM SDK；OpenReplay 是 OSS/self-host session replay。這一頁只談 browser / H5 / WebView 類場景，不把它們誤當 native App 全解。</aside></section>
+<section class="slide" data-title="Web Trace"><div class="content">
+<div class="eyebrow">Web · 一次 user journey</div><h2>Client telemetry 現在更像<strong style="color:var(--cyan)">一段旅程</strong></h2>
+<div class="diagram"><pre class="trace">User Session
+└─ Navigation / Route
+   ├─ LCP / INP / CLS
+   ├─ JS error
+   ├─ API request
+   │  └─ Backend distributed trace
+   └─ Product events
+      ├─ search_submitted
+      ├─ item_viewed
+      └─ checkout_started</pre></div>
+<div class="callout">書裡的 beacon loss / telemetry overhead 問題沒有消失，只是 SDK、batching、RUM 與 browser API 更成熟。</div>
+</div><aside class="speaker-note">這就是「Client log」到 product telemetry + RUM 的延伸。</aside></section>
 
-<section class="slide" data-title="OTel"><div class="content">
-<div class="eyebrow">Backend / Platform</div><h2>OpenTelemetry：<br><strong style="color:var(--cyan)">統一 instrumentation 與 telemetry pipeline</strong></h2>
-<div class="flow"><div class="node">Service</div><div class="arr">→</div><div class="node">OTel SDK</div><div class="arr">→</div><div class="node">Collector</div><div class="arr">→</div><div class="node">Backend(s)</div></div>
-<div class="callout">OTel 產生 / 收集 / 匯出 traces、metrics、logs；它本身不是 storage 或 dashboard。</div>
-</div><aside class="speaker-note">OpenTelemetry 官方定位就是 vendor-neutral framework/toolkit。它解的是標準化 instrumentation / collection / export，不是要取代 Grafana、Elastic、SigNoz 等 backend。</aside></section>
+<section class="slide" data-title="App Now"><div class="content">
+<div class="eyebrow">App · User-perceived performance</div><h2>Native App 也早就不只是 crash log</h2>
+<div class="flow"><div class="node">App startup</div><div class="arr">→</div><div class="node">Screen rendering</div><div class="arr">→</div><div class="node">HTTP request</div><div class="arr">→</div><div class="node">foreground / background</div></div>
+<div class="grid3"><div class="card accent-green"><h3>Rendering</h3><p>slow frames<br>frozen frames</p></div><div class="card accent-rose"><h3>Reliability</h3><p>fatal · non-fatal · ANR</p></div><div class="card accent-blue"><h3>Vitals</h3><p>user-perceived crash / ANR<br>memory / battery</p></div></div>
+</div><aside class="speaker-note">Firebase Performance 會自動收 app startup、screen rendering、HTTP request、foreground/background traces；Crashlytics 會分 crash、non-fatal、ANR；Android vitals 也有 user-perceived crash/ANR、memory、battery 指標。</aside></section>
 
-<section class="slide" data-title="Grafana"><div class="content">
-<div class="eyebrow">Grafana ecosystem</div><h2>一個 UI，後面其實是不同 signal backend</h2>
-<div class="diagram"><div class="stack">
-<div class="layer"><strong>Grafana</strong><span>Dashboard / Explore</span></div>
-<div class="layer"><strong>Tempo</strong><span>Traces</span></div>
-<div class="layer"><strong>Loki</strong><span>Logs</span></div>
-<div class="layer"><strong>Prometheus / Mimir</strong><span>Metrics</span></div>
-<div class="layer"><strong>Faro</strong><span>Browser RUM</span></div>
-</div></div>
-</div><aside class="speaker-note">這頁用來拆開 visualization、storage/backend、frontend SDK 三種角色。資料通常可先經 OTel Collector，再送到對應 backend。</aside></section>
+<section class="slide" data-title="Backend Trace"><div class="content">
+<div class="eyebrow">Backend · Distributed tracing</div><h2>共同 identifier 被標準化成<strong style="color:var(--blue)"> trace context</strong></h2>
+<div class="grid2"><div class="card"><h3>Trace model</h3><p><code>trace_id</code><br><code>span_id</code><br><code>parent_span_id</code></p></div><div class="card"><h3>W3C propagation</h3><p><code>traceparent</code><br><code>tracestate</code></p></div></div>
+<div class="flow"><div class="node">Browser</div><div class="arr">→</div><div class="node">API Gateway</div><div class="arr">→</div><div class="node">Service A</div><div class="arr">→</div><div class="node">DB</div><div class="arr">→</div><div class="node">Service B</div></div>
+</div><aside class="speaker-note">W3C Trace Context 讓不同工具、服務都能沿同一個 trace 傳遞 context。</aside></section>
 
-<section class="slide" data-title="Elastic"><div class="content">
-<div class="eyebrow">Elastic / Kibana</div><h2>另一套常見的完整路徑</h2>
-<div class="flow"><div class="node">APM / OTel / RUM</div><div class="arr">→</div><div class="node">Elasticsearch</div><div class="arr">→</div><div class="node">Kibana</div></div>
-<div class="callout">Elastic 可直接接 OTLP；Kibana 負責查詢與視覺化。</div>
-</div><aside class="speaker-note">這頁跟 Grafana 對照最清楚：OTel 是資料標準/管線，Elasticsearch 是儲存與查詢平台，Kibana 是介面。</aside></section>
+<section class="slide" data-title="OTel Semconv"><div class="content">
+<div class="eyebrow">OpenTelemetry</div><h2>不只 trace：還有共同的<strong style="color:var(--cyan)">語義</strong></h2>
+<div class="grid4"><div class="card"><h3>Traces</h3><p>operation / parent-child</p></div><div class="card"><h3>Metrics</h3><p>可聚合的量化訊號</p></div><div class="card"><h3>Logs</h3><p>事件與診斷細節</p></div><div class="card"><h3>Profiles</h3><p>profiling semantic conventions</p></div></div>
+<div class="callout">HTTP、DB、messaging、feature flags 等都有 semantic conventions；跨語言 / 跨團隊不用各自發明欄位。</div>
+</div><aside class="speaker-note">OpenTelemetry semantic conventions 已涵蓋 traces、metrics、logs、profiles、resources；但各 category 的穩定度不一定相同。</aside></section>
 
-<section class="slide" data-title="OSS"><div class="content">
-<div class="eyebrow">OSS / Self-host</div><h2>想快速自己架，可以先看這幾套</h2>
-<div class="grid3">
-<div class="card tool accent-green"><div class="name">SigNoz</div><div class="use">logs · metrics · traces · exceptions</div><span class="pill oss">OSS</span></div>
-<div class="card tool accent-purple"><div class="name">ClickStack</div><div class="use">ClickHouse + HyperDX + OTel</div><span class="pill oss">OSS</span></div>
-<div class="card tool accent-cyan"><div class="name">OpenReplay</div><div class="use">session replay · frontend debugging</div><span class="pill oss">OSS · self-host</span></div>
-</div>
-</div><aside class="speaker-note">SigNoz 適合一體式 O11y；ClickStack 是 ClickHouse 上的 logs/metrics/traces/session replay；OpenReplay 專注 frontend replay。這些不是同類產品，只是都適合拿來做讀書會或 PoC。</aside></section>
+<section class="slide" data-title="Browser Caveat"><div class="content">
+<div class="eyebrow">一個 2026 還要注意的現況</div><h2>Browser OTel instrumentation<br>仍是<strong style="color:var(--amber)"> experimental / mostly unspecified</strong></h2>
+<div class="split"><div class="answer"><div class="q">Frontend</div><div class="a">成熟 RUM / Product SDK</div><p class="muted">Events · Web Vitals · Replay · Errors</p></div><div class="answer"><div class="q">Backend</div><div class="a">OpenTelemetry</div><p class="muted">Trace context · spans · metrics · logs</p></div></div>
+<div class="callout">透過 trace context 串起兩側，不必為了「全 OTel」硬把 Browser 端所有 telemetry 自己做。</div>
+</div><aside class="speaker-note">這是 OpenTelemetry 官方目前的警告。Frontend 與 backend 可以不同 SDK，但用 context/correlation 接起來。</aside></section>
+
+<section class="slide" data-title="App Tools"><div class="content">
+<div class="eyebrow">App / Product tools</div><h2>常見工具，各自回答不同問題</h2>
+<div class="grid4"><div class="card tool accent-cyan"><div class="name">PostHog</div><div class="use">analytics · replay · flags · experiments</div><span class="pill free">free tier</span></div><div class="card tool accent-blue"><div class="name">Firebase</div><div class="use">Analytics · Performance · Crashlytics</div><span class="pill free">no-cost products</span></div><div class="card tool accent-rose"><div class="name">Sentry</div><div class="use">errors · performance · replay</div></div><div class="card tool accent-green"><div class="name">Countly Lite</div><div class="use">product analytics</div><span class="pill oss">OSS · self-host</span></div></div>
+</div><aside class="speaker-note">不是互斥選項。Product analytics、client perf/crash、session replay 常會有重疊。</aside></section>
+
+<section class="slide" data-title="O11y Stacks"><div class="content">
+<div class="eyebrow">Backend / Platform tools</div><h2>資料管線、儲存、UI 要分開看</h2>
+<div class="grid3"><div class="card accent-blue"><h3>Grafana ecosystem</h3><p>Grafana · Tempo · Loki · Prometheus/Mimir · Faro</p></div><div class="card accent-amber"><h3>Elastic</h3><p>APM / OTel / RUM → Elasticsearch → Kibana</p></div><div class="card accent-green"><h3>OSS all-in-one</h3><p>SigNoz<br>ClickStack / HyperDX<br>OpenReplay</p></div></div>
+<div class="callout">OpenTelemetry 解 instrumentation / collection / export；它本身不是 storage 或 dashboard。</div>
+</div><aside class="speaker-note">如果讀書會要 demo：SigNoz 或 ClickStack 比自己拼很多 backend 更省時間；Web replay 可看 OpenReplay。</aside></section>
 
 <section class="slide section" data-title="RecSys"><div class="content">
-<div class="eyebrow">Part III · Recommendation Systems</div><h1>把 13.1 / 13.2<br>放回我們的場景</h1>
-</div><aside class="speaker-note">這段開始用推薦系統具體化。聽眾有 BE/DE/MLE 背景，這比一般網站範例更貼近工作。</aside></section>
+<div class="eyebrow">Part III · Recommendation</div><h1>把 13.1 / 13.2<br>放回我們的場景</h1>
+</div><aside class="speaker-note">接下來把書的 Client / Server / Join 直接映射到推薦系統。</aside></section>
 
 <section class="slide" data-title="Rec Flow"><div class="content">
-<div class="eyebrow">一次 Feed request</div><h2>Client 與 Server 的資訊要一路對得起來</h2>
+<div class="eyebrow">Recommendation · End-to-end</div><h2>一個 Feed request 其實跨很多視角</h2>
 <div class="flow"><div class="node">App</div><div class="arr">→</div><div class="node">Feed API</div><div class="arr">→</div><div class="node">Candidate</div><div class="arr">→</div><div class="node">Features</div><div class="arr">→</div><div class="node">Ranking</div><div class="arr">→</div><div class="node">Impression</div><div class="arr">→</div><div class="node">Click</div></div>
-<div class="grid3">
-<div class="card accent-cyan"><h3>Product</h3><p>impression · click · dwell</p></div>
-<div class="card accent-blue"><h3>System</h3><p>latency · error · trace</p></div>
-<div class="card accent-purple"><h3>Model</h3><p>candidate · feature · score · version</p></div>
-</div>
-</div><aside class="speaker-note">這就是原書兩個視角的現代版：App 端是 user reality；server/model 端是內部原因。</aside></section>
+<div class="grid3"><div class="card"><h3>Product</h3><p>impression · click · dwell</p></div><div class="card"><h3>System</h3><p>request · trace · latency</p></div><div class="card"><h3>Model</h3><p>candidate · feature · score · version</p></div></div>
+</div><aside class="speaker-note">這裡就是原書說的「user 所見」+「system 原因」。推薦系統多了一層 model lineage / scoring context。</aside></section>
 
-<section class="slide" data-title="Rec IDs"><div class="content">
-<div class="eyebrow">Multi-source join</div><h2>今天不是一個萬能 ID，<br>而是一組<strong style="color:var(--green)">有語義的 IDs</strong></h2>
-<div class="grid3">
-<div class="card"><h3>session_id</h3><p>user journey</p></div>
-<div class="card"><h3>trace_id</h3><p>causal path</p></div>
-<div class="card"><h3>feed_request_id</h3><p>serving request</p></div>
-<div class="card"><h3>impression_id</h3><p>曝光 attribution</p></div>
-<div class="card"><h3>experiment_id + variant</h3><p>實驗歸因</p></div>
-<div class="card"><h3>model_version</h3><p>model lineage</p></div>
-</div>
-</div><aside class="speaker-note">這張直接對應 13.2 的 shared identifier。trace_id 不適合承擔所有產品/實驗語義，所以要保留 domain IDs。</aside></section>
+<section class="slide" data-title="IDs"><div class="content">
+<div class="eyebrow">Recommendation · IDs</div><h2>今天通常不是「一個萬能 join key」</h2>
+<div class="grid3"><div class="card"><h3>session_id</h3><p>user journey</p></div><div class="card"><h3>trace_id</h3><p>causal path</p></div><div class="card"><h3>feed_request_id</h3><p>serving request</p></div><div class="card"><h3>impression_id</h3><p>曝光 attribution</p></div><div class="card"><h3>experiment_id + variant</h3><p>實驗歸因</p></div><div class="card"><h3>model_version</h3><p>model lineage</p></div></div>
+</div><aside class="speaker-note">trace_id 解系統 causal chain，但不應承擔所有產品與實驗語義。</aside></section>
 
 <section class="slide" data-title="Debug CTR"><div class="content">
-<div class="eyebrow">實驗 Debug</div><h2>CTR -5%，到底是哪裡出問題？</h2>
-<div class="grid4">
-<div class="card"><h3>Client</h3><p>曝光埋點掉了？</p></div>
-<div class="card"><h3>Serving</h3><p>timeout / retry 變多？</p></div>
-<div class="card"><h3>Model</h3><p>candidate / ranking 真的變差？</p></div>
-<div class="card"><h3>Experiment</h3><p>assignment / variant 對嗎？</p></div>
-</div>
-<div class="callout">Instrumentation 的價值：把「指標變差」拆成可驗證的假設。</div>
-</div><aside class="speaker-note">這張可以拿來跟全場互動。它其實就是本章的核心：沒有 user + system 的 baseline 和 join，A/B test 的結果很難解釋。</aside></section>
+<div class="eyebrow">Experiment Debug</div><h2>CTR -5%，到底是哪裡出問題？</h2>
+<div class="grid4"><div class="card"><h3>Client</h3><p>曝光埋點掉了？</p></div><div class="card"><h3>Serving</h3><p>timeout / fallback？</p></div><div class="card"><h3>Model</h3><p>ranking 真的變差？</p></div><div class="card"><h3>Experiment</h3><p>assignment / join 錯？</p></div></div>
+<div class="quote">沒有 instrumentation，實驗結果只能告訴你「變了」，不會告訴你「為什麼」。</div>
+</div><aside class="speaker-note">這張最適合把書的價值拉回你們平常真的會 debug 的事情。</aside></section>
 
 <section class="slide section" data-title="AI"><div class="content">
-<div class="eyebrow">Part IV · LLM / Agent</div><h1>同一個 observability 問題，<br>AI 又多了一層品質</h1>
-</div><aside class="speaker-note">這段不要講太長。它是「13 章概念延伸到新系統」，不是另外一場 AI 課。</aside></section>
+<div class="eyebrow">Part IV · AI</div><h1>LLM / Agent<br>多了哪些 telemetry？</h1>
+</div><aside class="speaker-note">最後再進 AI，讓它成為同一條 instrumentation 演進線，而不是獨立話題。</aside></section>
 
 <section class="slide" data-title="LLM"><div class="content">
-<div class="eyebrow">LLM observability</div><h2>HTTP 200 不代表回答是好的</h2>
-<div class="grid4">
-<div class="card"><h3>Model</h3><p>provider · model · version</p></div>
-<div class="card"><h3>Latency</h3><p>TTFT · generation</p></div>
-<div class="card"><h3>Usage</h3><p>input/output tokens · cost</p></div>
-<div class="card"><h3>Context</h3><p>prompt · retrieval · tool</p></div>
-</div>
-</div><aside class="speaker-note">傳統 APM 能告訴你 API 成功、耗時多少；AI 還需要看到 prompt/model/retrieval/tool 等 domain context。</aside></section>
+<div class="eyebrow">LLM Observability</div><h2>HTTP 200 不代表答案是好的</h2>
+<div class="grid4"><div class="card"><h3>Model</h3><p>provider · model · prompt version</p></div><div class="card"><h3>Latency</h3><p>TTFT · total latency · retry</p></div><div class="card"><h3>Usage</h3><p>input/output tokens · cost</p></div><div class="card"><h3>Context</h3><p>retrieval · tool · cache</p></div></div>
+<div class="diagram"><pre class="trace">total 20s
+├─ retrieval     0.8s
+├─ model TTFT    2.3s
+├─ generation   12.1s
+├─ tool          3.9s
+└─ retry         0.9s</pre></div>
+</div><aside class="speaker-note">傳統 APM 看 request 成功與 latency；LLM 還要把 retrieval、generation、tools、retry 拆開。</aside></section>
 
 <section class="slide" data-title="Agent"><div class="content">
-<div class="eyebrow">Agent observability</div><h2>Request 變成 workflow tree</h2>
-<div class="flow"><div class="node">User</div><div class="arr">→</div><div class="node">Agent</div><div class="arr">→</div><div class="node">Plan</div><div class="arr">→</div><div class="node">Retrieval</div><div class="arr">→</div><div class="node">Tool</div><div class="arr">→</div><div class="node">Handoff</div><div class="arr">→</div><div class="node">Final</div></div>
-<div class="callout">Debug 的單位不再只是一次 model call，而是整條 workflow。</div>
-</div><aside class="speaker-note">Agent tracing 本質上越來越像 distributed tracing：每個 model/tool/retrieval/handoff 都是可觀測的 step/span。</aside></section>
-
-<section class="slide" data-title="AI tools"><div class="content">
-<div class="eyebrow">AI-specific tools</div><h2>General O11y 之外，再加 AI domain context</h2>
-<div class="grid2">
-<div class="card tool accent-cyan"><div class="name">Langfuse</div><div class="use">traces · prompts · datasets · evals</div><span class="pill oss">open source</span></div>
-<div class="card tool accent-purple"><div class="name">Phoenix</div><div class="use">OTel-based tracing · eval · datasets · experiments</div><span class="pill oss">open source</span></div>
-</div>
-</div><aside class="speaker-note">它們不是 Grafana/Elastic 的單純替代品，而是對 LLM/Agent 的 prompt、token、retrieval、tool、eval 有一等公民的資料模型。</aside></section>
+<div class="eyebrow">Agent Observability</div><h2>最小單位從 request 變成<strong style="color:var(--purple)"> workflow tree</strong></h2>
+<div class="flow"><div class="node">workflow</div><div class="arr">→</div><div class="node">agent</div><div class="arr">→</div><div class="node">plan</div><div class="arr">→</div><div class="node">retrieval</div><div class="arr">→</div><div class="node">tool</div><div class="arr">→</div><div class="node">handoff</div><div class="arr">→</div><div class="node">guardrail</div></div>
+<div class="grid2"><div class="card tool"><div class="name">Langfuse</div><div class="use">traces · prompts · datasets · evals</div><span class="pill oss">OSS · self-host</span></div><div class="card tool"><div class="name">Phoenix</div><div class="use">OTel tracing · eval · datasets · experiments</div><span class="pill oss">open source</span></div></div>
+</div><aside class="speaker-note">Agent bug 常發生在選錯 tool、retrieval、handoff、retry loop，而不是最後一次 model call。</aside></section>
 
 <section class="slide" data-title="Eval"><div class="content">
-<div class="eyebrow">AI 新增的問題</div><h2>Observability ≠ Evaluation</h2>
-<div class="split">
-<div class="answer" style="background:rgba(96,165,250,.08)"><div class="q">Observability</div><div class="a">What happened?</div><p class="muted">慢在哪、哪個 tool error、token 花多少。</p></div>
-<div class="answer" style="background:rgba(110,231,183,.08)"><div class="q">Evaluation</div><div class="a">Was it good?</div><p class="muted">正確嗎、grounded 嗎、task 成功嗎。</p></div>
-</div>
-</div><aside class="speaker-note">這是 AI 系統相對傳統 API 最重要的新增維度。可靠執行和輸出品質必須分開觀測。</aside></section>
+<div class="eyebrow">AI 的新差異</div><h2>Observability ≠ Evaluation</h2>
+<div class="split"><div class="answer" style="background:rgba(96,165,250,.08)"><div class="q">Observability</div><div class="a">What happened?</div><p class="muted">慢在哪、tool 是否失敗、token 花多少。</p></div><div class="answer" style="background:rgba(110,231,183,.08)"><div class="q">Evaluation</div><div class="a">Was it good?</div><p class="muted">correctness · groundedness · task success · user feedback</p></div></div>
+</div><aside class="speaker-note">這是 AI 系統真正多出來的一個維度：健康不等於品質。</aside></section>
 
 <section class="slide" data-title="Takeaway"><div class="content">
-<div class="eyebrow">Takeaway</div><h2>原書的核心，到今天仍然成立</h2>
-<p class="big">知道<strong style="color:var(--cyan)">使用者經歷什麼</strong>，<br>知道<strong style="color:var(--blue)">系統為什麼這樣做</strong>，<br>而且兩邊<strong style="color:var(--green)">能可靠地串起來</strong>。</p>
-<div class="flow"><div class="node">13.1 Client + Server</div><div class="arr">→</div><div class="node">13.2 Join</div><div class="arr">→</div><div class="node">13.3 Culture</div><div class="arr">→</div><div class="node">2026 O11y + Eval</div></div>
+<div class="eyebrow">Takeaway</div><h2>六年後，核心其實沒變</h2>
+<p class="big">知道<strong style="color:var(--cyan)">使用者經歷什麼</strong>，<br>知道<strong style="color:var(--blue)">系統為什麼這樣做</strong>，<br>而且兩邊<strong style="color:var(--green)">能被可靠地串起來</strong>。</p>
+<div class="flow"><div class="node">Book: client + server + join</div><div class="arr">→</div><div class="node">2026: events + RUM + traces + eval</div></div>
 <p class="foot">References: <a href="./SOURCES.md">SOURCES.md</a></p>
-</div><aside class="speaker-note">最後回到書，不用以工具收尾。工具會換，但原書的三個結構：client/server、multi-source join、logging culture，仍然是今天 O11y 的骨架。</aside></section>
+</div><aside class="speaker-note">工具會換，但 instrumentation 的目的沒有換。</aside></section>
 
 </div>
 <button class="note-toggle" id="noteBtn" title="Toggle speaker notes">N · Notes</button>
