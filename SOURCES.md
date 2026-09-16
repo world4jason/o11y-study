@@ -9,28 +9,53 @@ Official and primary references for the Chapter 13 study deck and the 2026 compa
 - 13.2：multi-source logs、shared join identifiers、common fields / formats.
 - 13.3：instrumentation culture、instrument during development、monitor telemetry quality.
 
-## OpenTelemetry
+## Web / frontend
 
-- OpenTelemetry — What is OpenTelemetry?  
-  https://opentelemetry.io/docs/what-is-opentelemetry/
-- OpenTelemetry documentation  
-  https://opentelemetry.io/docs/
-- OpenTelemetry GenAI semantic conventions  
-  https://github.com/open-telemetry/semantic-conventions-genai
+### Core Web Vitals
+- web.dev — Web Vitals  
+  https://web.dev/articles/vitals
+- web.dev — How SPA architectures affect Core Web Vitals  
+  https://web.dev/articles/vitals-spa-faq
 
-OpenTelemetry is a vendor-neutral framework and toolkit for generating, collecting and exporting traces, metrics and logs. It is not itself an observability backend.
+Current Core Web Vitals use LCP, INP and CLS. The recommended thresholds are LCP ≤ 2.5 s, INP ≤ 200 ms and CLS ≤ 0.1, assessed at the 75th percentile. In August 2026, web.dev documented Chrome 151 soft-navigation APIs that allow Core Web Vitals to be measured across SPA route transitions, although ecosystem integration is still rolling out.
+
+### Grafana Faro
+- Grafana Faro OSS  
+  https://grafana.com/oss/faro/
+- Grafana Cloud Frontend Observability  
+  https://grafana.com/docs/grafana-cloud/observe-and-act/monitor-applications/frontend-observability/
+
+Open-source browser RUM SDK for performance metrics, logs, exceptions, events and traces.
+
+### OpenReplay
+- OpenReplay documentation  
+  https://docs.openreplay.com/
+
+Open-source, self-hosted session replay and frontend debugging stack.
 
 ## App / product instrumentation
 
-### Firebase
-- Google Analytics for Firebase  
-  https://firebase.google.com/docs/analytics
+### Firebase Performance Monitoring
 - Firebase Performance Monitoring  
   https://firebase.google.com/docs/perf-mon
 - Firebase screen rendering traces  
   https://firebase.google.com/docs/perf-mon/screen-traces
-- Firebase pricing  
-  https://firebase.google.com/pricing
+- App start / foreground / background traces  
+  https://firebase.google.com/docs/perf-mon/app-start-foreground-background-traces
+
+For native apps, Firebase Performance Monitoring automatically collects app startup, screen rendering, HTTP network and foreground/background lifecycle traces. Screen-rendering traces report slow and frozen frames.
+
+### Firebase Crashlytics
+- Crashlytics for Android  
+  https://firebase.google.com/docs/crashlytics/android/get-started
+
+Crashlytics reports fatal crashes, non-fatal errors and Android ANRs.
+
+### Android vitals
+- Android Developers — Android vitals  
+  https://developer.android.com/topic/performance/vitals
+
+Android vitals includes user-perceived crash and ANR rates as core stability vitals, plus battery and memory-related metrics.
 
 ### PostHog
 - PostHog  
@@ -50,21 +75,27 @@ Product analytics, session replay, error tracking, feature flags and experiments
 
 Open-source, self-hosted product analytics covering mobile, web and desktop.
 
-## Frontend / Web observability
+## Distributed tracing / OpenTelemetry
 
-### Grafana Faro
-- Grafana Faro OSS  
-  https://grafana.com/oss/faro/
-- Grafana Cloud Frontend Observability  
-  https://grafana.com/docs/grafana-cloud/observe-and-act/monitor-applications/frontend-observability/
+### W3C Trace Context
+- W3C Trace Context  
+  https://www.w3.org/TR/trace-context/
 
-Open-source browser RUM SDK for performance metrics, logs, exceptions, events and traces.
+Defines the interoperable `traceparent` and `tracestate` HTTP headers used to propagate trace context across services and vendors.
 
-### OpenReplay
-- OpenReplay documentation  
-  https://docs.openreplay.com/
+### OpenTelemetry
+- What is OpenTelemetry?  
+  https://opentelemetry.io/docs/what-is-opentelemetry/
+- Semantic Conventions  
+  https://opentelemetry.io/docs/specs/semconv/
+- General Semantic Conventions  
+  https://opentelemetry.io/docs/specs/semconv/general/
+- JavaScript Browser instrumentation  
+  https://opentelemetry.io/docs/languages/js/getting-started/browser/
+- OpenTelemetry GenAI semantic conventions  
+  https://github.com/open-telemetry/semantic-conventions-genai
 
-Open-source, self-hosted session replay and frontend debugging stack.
+OpenTelemetry is a vendor-neutral framework and toolkit for generating, collecting and exporting telemetry. It is not itself an observability backend. Semantic conventions cover traces/spans, metrics, logs, profiles and resources. OpenTelemetry's browser client instrumentation is still explicitly documented as experimental and mostly unspecified.
 
 ## Backend observability stacks
 
