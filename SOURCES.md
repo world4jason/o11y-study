@@ -9,53 +9,50 @@ Official and primary references for the Chapter 13 study deck and the 2026 compa
 - 13.2：multi-source logs、shared join identifiers、common fields / formats.
 - 13.3：instrumentation culture、instrument during development、monitor telemetry quality.
 
-## Web / frontend
+## OpenTelemetry
 
-### Core Web Vitals
-- web.dev — Web Vitals  
-  https://web.dev/articles/vitals
-- web.dev — How SPA architectures affect Core Web Vitals  
-  https://web.dev/articles/vitals-spa-faq
+- OpenTelemetry — What is OpenTelemetry?  
+  https://opentelemetry.io/docs/what-is-opentelemetry/
+- OpenTelemetry documentation  
+  https://opentelemetry.io/docs/
+- OpenTelemetry GenAI semantic conventions  
+  https://github.com/open-telemetry/semantic-conventions-genai
 
-Current Core Web Vitals use LCP, INP and CLS. The recommended thresholds are LCP ≤ 2.5 s, INP ≤ 200 ms and CLS ≤ 0.1, assessed at the 75th percentile. In August 2026, web.dev documented Chrome 151 soft-navigation APIs that allow Core Web Vitals to be measured across SPA route transitions, although ecosystem integration is still rolling out.
+OpenTelemetry is a vendor-neutral framework and toolkit for generating, collecting and exporting traces, metrics and logs. It is not itself an observability backend.
 
-### Grafana Faro
+## Web / Real User Monitoring
+
+### RUM
+- Grafana Frontend Observability / RUM  
+  https://grafana.com/products/cloud/frontend-observability/
+- Grafana Frontend Observability capabilities  
+  https://grafana.com/docs/grafana-cloud/observe-and-act/monitor-applications/frontend-observability/introduction/what-you-can-do/
 - Grafana Faro OSS  
   https://grafana.com/oss/faro/
-- Grafana Cloud Frontend Observability  
-  https://grafana.com/docs/grafana-cloud/observe-and-act/monitor-applications/frontend-observability/
 
-Open-source browser RUM SDK for performance metrics, logs, exceptions, events and traces.
+RUM means Real User Monitoring: frontend telemetry collected from real end-user sessions, including Web Vitals, navigation timing, device/network context, errors, interactions and browser traces. It is distinct from synthetic monitoring, which actively simulates user journeys.
 
-### OpenReplay
-- OpenReplay documentation  
-  https://docs.openreplay.com/
+## App / Android quality
 
-Open-source, self-hosted session replay and frontend debugging stack.
+### ANR
+- Android Developers — ANRs  
+  https://developer.android.com/topic/performance/vitals/anr
+- Android Developers — Diagnose and fix ANRs  
+  https://developer.android.com/topic/performance/anrs/diagnose-and-fix-anrs
+- Android vitals  
+  https://developer.android.com/games/optimize/vitals
 
-## App / product instrumentation
+ANR means Application Not Responding. Android triggers ANR conditions when an app cannot respond within platform-defined timeouts; for input dispatch, the typical timeout is 5 seconds. Android vitals tracks ANR rate and user-perceived ANR rate, with user-perceived ANR treated as a core vital.
 
-### Firebase Performance Monitoring
+### Firebase
+- Google Analytics for Firebase  
+  https://firebase.google.com/docs/analytics
 - Firebase Performance Monitoring  
   https://firebase.google.com/docs/perf-mon
 - Firebase screen rendering traces  
   https://firebase.google.com/docs/perf-mon/screen-traces
-- App start / foreground / background traces  
-  https://firebase.google.com/docs/perf-mon/app-start-foreground-background-traces
-
-For native apps, Firebase Performance Monitoring automatically collects app startup, screen rendering, HTTP network and foreground/background lifecycle traces. Screen-rendering traces report slow and frozen frames.
-
-### Firebase Crashlytics
-- Crashlytics for Android  
-  https://firebase.google.com/docs/crashlytics/android/get-started
-
-Crashlytics reports fatal crashes, non-fatal errors and Android ANRs.
-
-### Android vitals
-- Android Developers — Android vitals  
-  https://developer.android.com/topic/performance/vitals
-
-Android vitals includes user-perceived crash and ANR rates as core stability vitals, plus battery and memory-related metrics.
+- Firebase pricing  
+  https://firebase.google.com/pricing
 
 ### PostHog
 - PostHog  
@@ -75,27 +72,21 @@ Product analytics, session replay, error tracking, feature flags and experiments
 
 Open-source, self-hosted product analytics covering mobile, web and desktop.
 
-## Distributed tracing / OpenTelemetry
+## Frontend / Web observability
 
-### W3C Trace Context
-- W3C Trace Context  
-  https://www.w3.org/TR/trace-context/
+### Grafana Faro
+- Grafana Faro OSS  
+  https://grafana.com/oss/faro/
+- Grafana Cloud Frontend Observability  
+  https://grafana.com/docs/grafana-cloud/observe-and-act/monitor-applications/frontend-observability/
 
-Defines the interoperable `traceparent` and `tracestate` HTTP headers used to propagate trace context across services and vendors.
+Open-source browser RUM SDK for performance metrics, logs, exceptions, events and traces.
 
-### OpenTelemetry
-- What is OpenTelemetry?  
-  https://opentelemetry.io/docs/what-is-opentelemetry/
-- Semantic Conventions  
-  https://opentelemetry.io/docs/specs/semconv/
-- General Semantic Conventions  
-  https://opentelemetry.io/docs/specs/semconv/general/
-- JavaScript Browser instrumentation  
-  https://opentelemetry.io/docs/languages/js/getting-started/browser/
-- OpenTelemetry GenAI semantic conventions  
-  https://github.com/open-telemetry/semantic-conventions-genai
+### OpenReplay
+- OpenReplay documentation  
+  https://docs.openreplay.com/
 
-OpenTelemetry is a vendor-neutral framework and toolkit for generating, collecting and exporting telemetry. It is not itself an observability backend. Semantic conventions cover traces/spans, metrics, logs, profiles and resources. OpenTelemetry's browser client instrumentation is still explicitly documented as experimental and mostly unspecified.
+Open-source, self-hosted session replay and frontend debugging stack.
 
 ## Backend observability stacks
 
