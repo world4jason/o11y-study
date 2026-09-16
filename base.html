@@ -1,0 +1,208 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Chapter 13 Instrumentation → Observability 2026</title>
+<meta name="description" content="讀書會：先講《關鍵迭代》第 13 章原書內容，再對照 2026 的 Web / App / Recommendation / OpenTelemetry / LLM / Agent Observability。" />
+<style>
+:root{--bg:#08111f;--panel:#0f1d31;--text:#f4f7fb;--muted:#aab9ca;--cyan:#67e8f9;--blue:#60a5fa;--green:#6ee7b7;--amber:#fcd34d;--rose:#fda4af;--purple:#c4b5fd;--line:rgba(255,255,255,.14);--shadow:0 22px 60px rgba(0,0,0,.32);--radius:22px}
+*{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;background:var(--bg);color:var(--text);font-family:ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans TC",sans-serif}body{overflow:hidden}a{color:var(--cyan)}code,pre{font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace}.deck{height:100vh;position:relative}.slide{display:none;position:absolute;inset:0;padding:clamp(28px,4vw,68px);overflow:auto;background:radial-gradient(circle at 86% 12%,rgba(96,165,250,.12),transparent 30%),radial-gradient(circle at 10% 92%,rgba(103,232,249,.07),transparent 28%),var(--bg)}.slide.active{display:block}.content{max-width:1240px;margin:0 auto;min-height:calc(100vh - clamp(56px,8vw,136px));display:flex;flex-direction:column;justify-content:center}.eyebrow{color:var(--cyan);text-transform:uppercase;letter-spacing:.14em;font-size:13px;font-weight:800;margin-bottom:14px}h1{font-size:clamp(42px,7vw,84px);line-height:1.02;letter-spacing:-.045em;margin:0 0 22px}h2{font-size:clamp(34px,5vw,62px);line-height:1.08;letter-spacing:-.035em;margin:0 0 22px}h3{font-size:clamp(20px,2.2vw,28px);margin:0 0 9px}p,li{font-size:clamp(17px,1.52vw,22px);line-height:1.48}p{margin:7px 0 14px}.lead{color:var(--muted);font-size:clamp(20px,2.3vw,30px);max-width:1000px}.small,.foot{color:var(--muted);font-size:13px;line-height:1.5}.muted{color:var(--muted)}.tag,.pill{display:inline-flex;align-items:center;padding:7px 11px;border:1px solid var(--line);border-radius:999px;color:var(--muted);font-size:13px;margin:4px 5px 4px 0;background:rgba(255,255,255,.035)}.pill.oss{color:#b7f7dc;border-color:rgba(110,231,183,.35)}.pill.free{color:#dbeafe;border-color:rgba(96,165,250,.35)}.grid2,.grid3,.grid4{display:grid;gap:18px;margin-top:22px}.grid2{grid-template-columns:repeat(2,minmax(0,1fr))}.grid3{grid-template-columns:repeat(3,minmax(0,1fr))}.grid4{grid-template-columns:repeat(4,minmax(0,1fr))}.card{background:linear-gradient(180deg,rgba(255,255,255,.055),rgba(255,255,255,.025));border:1px solid var(--line);border-radius:var(--radius);padding:22px;box-shadow:var(--shadow)}.card p,.card li{font-size:clamp(15px,1.2vw,18px)}.accent-cyan{border-top:3px solid var(--cyan)}.accent-blue{border-top:3px solid var(--blue)}.accent-green{border-top:3px solid var(--green)}.accent-amber{border-top:3px solid var(--amber)}.accent-rose{border-top:3px solid var(--rose)}.accent-purple{border-top:3px solid var(--purple)}.quote{border-left:4px solid var(--cyan);padding:4px 0 4px 22px;margin:20px 0;font-size:clamp(22px,2.5vw,33px);line-height:1.4;max-width:1000px}.big{font-size:clamp(28px,3.8vw,52px);font-weight:850;line-height:1.2;letter-spacing:-.025em;max-width:1100px}.flow{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-top:24px}.node{border:1px solid var(--line);border-radius:16px;padding:13px 17px;background:var(--panel);min-width:120px;text-align:center;font-weight:750}.arr{color:var(--cyan);font-size:25px}.diagram{border:1px solid var(--line);border-radius:var(--radius);background:rgba(255,255,255,.025);padding:24px;margin-top:20px}.stack{display:grid;gap:9px;max-width:930px}.layer{border:1px solid var(--line);border-radius:14px;padding:12px 15px;display:flex;justify-content:space-between;gap:18px;align-items:center;background:var(--panel)}.layer span:last-child{color:var(--muted);font-size:14px}.compare{width:100%;border-collapse:collapse;margin-top:18px;border:1px solid var(--line);border-radius:18px;overflow:hidden}.compare th,.compare td{padding:11px 13px;border-bottom:1px solid var(--line);vertical-align:top;text-align:left;font-size:clamp(14px,1.08vw,16px)}.compare th{color:var(--cyan);background:rgba(255,255,255,.045)}.compare tr:last-child td{border-bottom:0}.tool{display:flex;flex-direction:column;gap:8px}.tool .name{font-weight:900;font-size:23px}.tool .use{color:var(--muted);font-size:16px}.callout{margin-top:20px;border:1px solid rgba(252,211,77,.35);background:rgba(252,211,77,.08);border-radius:16px;padding:14px 17px;color:#fde68a;font-size:clamp(15px,1.25vw,18px)}.split{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:22px}.answer{padding:24px;border-radius:var(--radius);border:1px solid var(--line)}.answer .q{font-size:16px;color:var(--muted);margin-bottom:7px}.answer .a{font-size:clamp(27px,3vw,44px);font-weight:900;line-height:1.15}.section{background:radial-gradient(circle at 50% 50%,rgba(103,232,249,.13),transparent 36%),var(--bg)}.section .content{align-items:flex-start}.section h1{max-width:1000px}.trace{font-size:clamp(15px,1.25vw,19px);line-height:1.5;white-space:pre-wrap;margin:0}.metric{font-size:clamp(28px,3vw,42px);font-weight:900}.term{position:relative;display:inline-block;border-bottom:1px dotted rgba(103,232,249,.75);cursor:help;color:inherit;outline:none}.term::after{content:attr(data-tip);position:absolute;left:50%;bottom:calc(100% + 10px);transform:translateX(-50%) translateY(5px);width:max-content;max-width:min(380px,80vw);padding:9px 12px;border:1px solid var(--line);border-radius:10px;background:#111827;color:#e5edf7;font-size:13px;line-height:1.35;font-weight:500;letter-spacing:0;text-transform:none;box-shadow:var(--shadow);opacity:0;visibility:hidden;transition:.15s;z-index:60;white-space:normal}.term:hover::after,.term:focus::after{opacity:1;visibility:visible;transform:translateX(-50%) translateY(0)}.controls{position:fixed;z-index:20;right:18px;bottom:16px;display:flex;align-items:center;gap:8px;background:rgba(5,12,23,.84);backdrop-filter:blur(12px);border:1px solid var(--line);border-radius:999px;padding:7px 9px}.counter{color:var(--muted);font-size:13px;min-width:54px;text-align:center}button{border:0;color:var(--text);background:transparent;font:inherit;cursor:pointer;padding:6px 10px;border-radius:999px}button:hover{background:rgba(255,255,255,.08)}.progress{position:fixed;bottom:0;left:0;height:3px;background:var(--cyan);z-index:30;transition:width .2s ease}.note-toggle{position:fixed;left:18px;bottom:16px;z-index:20;color:var(--muted);border:1px solid var(--line);background:rgba(5,12,23,.84);border-radius:999px;padding:8px 12px;font-size:12px}.speaker-note{display:none;position:fixed;left:18px;right:18px;bottom:58px;max-height:38vh;overflow:auto;z-index:50;background:#111827;border:1px solid var(--line);border-radius:16px;padding:16px 18px;box-shadow:var(--shadow);color:#dbeafe}.speaker-note.show{display:block}.speaker-note p,.speaker-note li{font-size:15px;line-height:1.5}.kbd{border:1px solid var(--line);background:rgba(255,255,255,.06);padding:1px 7px;border-radius:7px;font-size:12px}@media(max-width:900px){.grid3,.grid4{grid-template-columns:1fr 1fr}}@media(max-width:650px){.grid2,.grid3,.grid4,.split{grid-template-columns:1fr}.compare{display:block;overflow:auto}.term::after{left:0;transform:none;max-width:75vw}.term:hover::after,.term:focus::after{transform:none}}@media print{body{overflow:visible;background:#fff;color:#111}.deck{height:auto}.slide{display:block!important;position:relative;min-height:100vh;page-break-after:always;background:#fff;color:#111}.card,.diagram,.answer,.layer,.node{box-shadow:none;background:#fff;border-color:#bbb}.muted,.lead,.small,.foot,.layer span:last-child{color:#555!important}.controls,.progress,.note-toggle,.speaker-note{display:none!important}.term{border-bottom:0}.term::after{display:none}}
+</style>
+</head>
+<body>
+<div class="deck" id="deck">
+
+<section class="slide active" data-title="Title"><div class="content">
+<div class="eyebrow">Book Club · Chapter 13</div>
+<h1>工具化日誌記錄<br><span style="color:var(--cyan)">→ Observability 2026</span></h1>
+<p class="lead">先讀懂原書 13.1–13.3，再看 Web、App、推薦系統、OpenTelemetry、LLM 與 Agent 的今天做法。</p>
+<div><span class="tag">App</span><span class="tag">BE / DE / MLE</span><span class="tag">Recommendation</span><span class="tag">O11y</span></div>
+</div><aside class="speaker-note">分成兩段：前半段只講書；後半段才做 2026 的延伸。</aside></section>
+
+<section class="slide section" data-title="Book"><div class="content">
+<div class="eyebrow">Part I · 原書</div><h1>Chapter 13<br>工具化日誌記錄</h1>
+<div class="flow"><div class="node">13.1 Client / Server</div><div class="arr">→</div><div class="node">13.2 多源日誌</div><div class="arr">→</div><div class="node">13.3 Logging culture</div></div>
+</div><aside class="speaker-note">這一段不補工具、不先談 OTel。</aside></section>
+
+<section class="slide" data-title="13.1 Overview"><div class="content">
+<div class="eyebrow">13.1 · Client 與 Server 的工具化日誌</div><h2>兩個視角，回答不同問題</h2>
+<div class="grid2"><div class="card accent-cyan"><h3>Client</h3><p>使用者看到了什麼、做了什麼，以及實際體感。</p></div><div class="card accent-blue"><h3>Server</h3><p>系統內部發生了什麼，以及為什麼產生這個結果。</p></div></div>
+<div class="quote">Client 比較接近 user experience；Server 比較接近 system behavior。</div><p class="foot">原書 13.1</p>
+</div><aside class="speaker-note">Client 不是 Server 的替代品；兩邊各自看得到對方看不到的資訊。</aside></section>
+
+<section class="slide" data-title="13.1 Client"><div class="content">
+<div class="eyebrow">13.1 · Client-side</div><h2>Client 要記三類事情</h2>
+<div class="grid3"><div class="card accent-cyan"><h3>操作</h3><p>click · hover · scroll<br>何時發生、是否需要 server round-trip</p></div><div class="card accent-green"><h3>效能</h3><p>頁面多久顯示<br>多久可以互動</p></div><div class="card accent-rose"><h3>錯誤</h3><p>JavaScript error<br>client crash</p></div></div><p class="foot">原書 13.1</p>
+</div><aside class="speaker-note">這頁維持原書分類。App 的現代對照放到 Part II。</aside></section>
+
+<section class="slide" data-title="13.1 Client Limits"><div class="content">
+<div class="eyebrow">13.1 · Client-side 的限制</div><h2>Client log 本身也可能<strong style="color:var(--amber)">不可靠</strong></h2>
+<div class="grid4"><div class="card"><h3>成本</h3><p>CPU、network、battery</p></div><div class="card"><h3>Beacon loss</h3><p>換頁前可能還沒送完</p></div><div class="card"><h3>Trade-off</h3><p>強制同步送出會增加 latency</p></div><div class="card"><h3>Clock</h3><p>client 時鐘可能被修改或偏移</p></div></div>
+<div class="callout">不要直接拿 client timestamp 與 server timestamp 做時間差。</div><p class="foot">原書 13.1</p>
+</div><aside class="speaker-note">作者花不少篇幅講 client telemetry 的成本、丟失與 clock skew。</aside></section>
+
+<section class="slide" data-title="13.1 Server"><div class="content">
+<div class="eyebrow">13.1 · Server-side</div><h2>Server 關心的是<strong style="color:var(--blue)">內部行為</strong></h2>
+<div class="grid3"><div class="card accent-blue"><h3>Performance</h3><p>response latency<br>哪個 component 最慢<br>p99</p></div><div class="card accent-cyan"><h3>Response rate</h3><p>request / response volume<br>retry 如何處理</p></div><div class="card accent-rose"><h3>System info</h3><p>exception / error<br>cache hit rate</p></div></div>
+<div class="callout">Server log 更容易描述系統內部原因，通常也較少受 client network 影響。</div><p class="foot">原書 13.1</p>
+</div><aside class="speaker-note">原書還舉排序分數、server/data center 等例子。不過 server 之間仍要做 clock synchronization。</aside></section>
+
+<section class="slide" data-title="13.2"><div class="content">
+<div class="eyebrow">13.2 · 處理多源日誌</div><h2>資料來自不同地方，<br>下游必須能<strong style="color:var(--green)">合併</strong></h2>
+<div class="grid3"><div class="card"><h3>不同 Client</h3><p>browser · mobile</p></div><div class="card"><h3>Server</h3><p>backend / service logs</p></div><div class="card"><h3>User state</h3><p>opt-in · opt-out 等狀態</p></div></div>
+<div class="flow"><div class="node">共同 identifier</div><div class="arr">+</div><div class="node">共同欄位格式</div><div class="arr">→</div><div class="node">join / analysis</div></div><p class="foot">原書 13.2</p>
+</div><aside class="speaker-note">書中要求能表示同一 user / randomization unit 的 join key；必要時還要有 event-level key。共享欄位包括 timestamp、country/region、language、platform 等。</aside></section>
+
+<section class="slide" data-title="13.3"><div class="content">
+<div class="eyebrow">13.3 · 工具化日誌記錄的文化</div><h2>Logging 不是附加工作，<br>而是上線條件</h2>
+<div class="grid3"><div class="card accent-amber"><h3>沒有 log，不上線</h3><p>新產品 / 新功能沒有觀測能力就不應 release。</p></div><div class="card accent-cyan"><h3>開發時一起做</h3><p>提交前就加上必要 instrumentation 並測試。</p></div><div class="card accent-rose"><h3>監控 log 品質</h3><p>事件數、關鍵欄位、timestamp、異常值也要檢查。</p></div></div><p class="foot">原書 13.3</p>
+</div><aside class="speaker-note">作者用飛機儀表比喻「沒有 logging 就是在盲飛」。</aside></section>
+
+<section class="slide section" data-title="Now"><div class="content">
+<div class="eyebrow">Part II · 2026</div><h1>同一批問題，<br>今天怎麼做？</h1>
+<p class="lead">從這裡開始才加入現代工具、標準與 App / Recommendation / AI 的實務。</p>
+</div><aside class="speaker-note">從這張開始才是外部研究與 2026 實務。</aside></section>
+
+<section class="slide" data-title="2026 Summary"><div class="content">
+<div class="eyebrow">2026 · Product Telemetry + Observability + AI</div><h2>今天大概已經變成這樣</h2>
+<table class="compare"><thead><tr><th>面向</th><th>書中的做法</th><th>現在通常會做</th></tr></thead><tbody>
+<tr><td>Web 行為</td><td>click / hover / scroll</td><td>Product Events + <span class="term" tabindex="0" data-tip="Real User Monitoring：從真實使用者的瀏覽器／裝置收集效能、錯誤、環境與互動資料。">Real User Monitoring (RUM)</span> + Session / Navigation</td></tr>
+<tr><td>Web 效能</td><td>page display / interaction</td><td><span class="term" tabindex="0" data-tip="Largest Contentful Paint：主要內容載入速度。">LCP</span> / <span class="term" tabindex="0" data-tip="Interaction to Next Paint：互動到下一次畫面更新的反應速度。">INP</span> / <span class="term" tabindex="0" data-tip="Cumulative Layout Shift：版面意外位移程度。">CLS</span> + route / soft navigation</td></tr>
+<tr><td>App</td><td>client log / crash</td><td>startup · render · network · crash · <span class="term" tabindex="0" data-tip="Application Not Responding：Android UI thread 長時間無法回應輸入或繪製，系統會判定 App 無回應。">Application Not Responding (ANR)</span> · lifecycle</td></tr>
+<tr><td>Backend</td><td>latency / p99 / error / cache</td><td>Metrics + Logs + Distributed Traces</td></tr>
+<tr><td>跨服務</td><td>共同 join key</td><td>trace_id / span_id + W3C Trace Context</td></tr>
+<tr><td>LLM / Agent</td><td>書中沒有</td><td>model / token / <span class="term" tabindex="0" data-tip="Time to First Token：從 request 發出到模型吐出第一個 token 的時間。">TTFT</span> / retrieval / tool / handoff / eval</td></tr>
+</tbody></table>
+</div><aside class="speaker-note">第一次出現的縮寫直接展開；滑鼠 hover 或鍵盤 focus 也會看到簡短定義。接著用專頁講 RUM 與 ANR。</aside></section>
+
+<section class="slide" data-title="RUM"><div class="content">
+<div class="eyebrow">Web · Real User Monitoring (RUM)</div><h2>RUM = 看<strong style="color:var(--cyan)">真實使用者</strong>怎麼經歷你的前端</h2>
+<div class="grid3"><div class="card accent-cyan"><h3>Who / Where</h3><p>browser · device · network · release · route</p></div><div class="card accent-green"><h3>What felt slow</h3><p>Web Vitals · navigation · interaction latency</p></div><div class="card accent-rose"><h3>What broke</h3><p>JS errors · failed requests · frontend traces</p></div></div>
+<div class="callout"><strong>RUM 不是 synthetic test。</strong> Synthetic 是「我們主動模擬一個使用者」；RUM 是「真實使用者真的發生了什麼」。</div>
+</div><aside class="speaker-note">Grafana 對 RUM 的定義就是從真實終端使用者收集 frontend performance / errors / interaction context，並可和 backend telemetry correlation。這一頁先讓大家知道 RUM 是資料來源／觀測方式，不是某個特定產品名。</aside></section>
+
+<section class="slide" data-title="Web Now"><div class="content">
+<div class="eyebrow">Web · Real User Monitoring</div><h2>現在不只是「記 click」</h2>
+<div class="grid3"><div class="card accent-green"><div class="metric"><span class="term" tabindex="0" data-tip="Largest Contentful Paint">LCP</span> ≤ 2.5s</div><p>主要內容多久顯示</p></div><div class="card accent-cyan"><div class="metric"><span class="term" tabindex="0" data-tip="Interaction to Next Paint">INP</span> ≤ 200ms</div><p>互動後多久有畫面反應</p></div><div class="card accent-purple"><div class="metric"><span class="term" tabindex="0" data-tip="Cumulative Layout Shift">CLS</span> ≤ 0.1</div><p>頁面會不會亂跳</p></div></div>
+<div class="callout">看真實使用者資料的 <span class="term" tabindex="0" data-tip="75th percentile：至少 75% 的實際體驗要達標。">p75</span>；SPA 還要處理 route / soft navigation，而不是只量第一次 page load。</div>
+</div><aside class="speaker-note">Core Web Vitals 目前仍是 LCP、INP、CLS，門檻看第 75 百分位。Chrome 151 在 2026 加入 soft-navigation APIs，讓 SPA route transition 能更像獨立 navigation 來量。</aside></section>
+
+<section class="slide" data-title="Web Trace"><div class="content">
+<div class="eyebrow">Web · 一次 user journey</div><h2>Client telemetry 現在更像<strong style="color:var(--cyan)">一段旅程</strong></h2>
+<div class="diagram"><pre class="trace">User Session
+└─ Navigation / Route
+   ├─ LCP / INP / CLS
+   ├─ JS error
+   ├─ API request
+   │  └─ Backend distributed trace
+   └─ Product events
+      ├─ search_submitted
+      ├─ item_viewed
+      └─ checkout_started</pre></div>
+<div class="callout">書裡的 beacon loss / telemetry overhead 問題沒有消失，只是 SDK、batching、RUM 與 browser API 更成熟。</div>
+</div><aside class="speaker-note">這就是「Client log」到 product telemetry + RUM 的延伸。</aside></section>
+
+<section class="slide" data-title="App Now"><div class="content">
+<div class="eyebrow">App · User-perceived performance</div><h2>Native App 也早就不只是 crash log</h2>
+<div class="flow"><div class="node">App startup</div><div class="arr">→</div><div class="node">Screen rendering</div><div class="arr">→</div><div class="node">HTTP request</div><div class="arr">→</div><div class="node">foreground / background</div></div>
+<div class="grid3"><div class="card accent-green"><h3>Rendering</h3><p>slow frames<br>frozen frames</p></div><div class="card accent-rose"><h3>Reliability</h3><p>fatal · non-fatal · <span class="term" tabindex="0" data-tip="Application Not Responding：App 沒有在系統允許的時間內回應。">ANR</span></p></div><div class="card accent-blue"><h3>Vitals</h3><p>user-perceived crash / <span class="term" tabindex="0" data-tip="Google Play 特別關注使用者真的感受到的 ANR。">ANR</span><br>memory / battery</p></div></div>
+</div><aside class="speaker-note">Firebase Performance 會自動收 app startup、screen rendering、HTTP request、foreground/background traces；Crashlytics 會分 crash、non-fatal、ANR；Android vitals 也有 user-perceived crash/ANR、memory、battery 指標。</aside></section>
+
+<section class="slide" data-title="ANR"><div class="content">
+<div class="eyebrow">Android · Application Not Responding (ANR)</div><h2>不是 crash：App 還活著，<br>但<strong style="color:var(--rose)">使用者已經不能正常操作</strong></h2>
+<div class="grid3"><div class="card accent-rose"><h3>典型情況</h3><p>UI / main thread 被卡住，無法及時處理 touch、key 或 redraw。</p></div><div class="card accent-amber"><h3>Input timeout</h3><p>前景 App 對 input event 約 5 秒沒有回應，就可能觸發 ANR。</p></div><div class="card accent-blue"><h3>Production metric</h3><p>Android vitals 會追 ANR rate，以及 user-perceived ANR rate。</p></div></div>
+<div class="callout"><strong>Crash：</strong>程式直接終止。　<strong>ANR：</strong>程式還在，但卡到 Android 判定「沒有回應」。</div>
+</div><aside class="speaker-note">Android 官方指出：UI thread blocked 太久就會 ANR。Input dispatch timeout 的典型預設門檻是 5 秒；user-perceived ANR rate 是 Google Play 的 core vital，因為它發生在使用者正在互動時。</aside></section>
+
+<section class="slide" data-title="Backend Trace"><div class="content">
+<div class="eyebrow">Backend · Distributed tracing</div><h2>共同 identifier 被標準化成<strong style="color:var(--blue)"> trace context</strong></h2>
+<div class="grid2"><div class="card"><h3>Trace model</h3><p><code>trace_id</code><br><code>span_id</code><br><code>parent_span_id</code></p></div><div class="card"><h3>W3C propagation</h3><p><code>traceparent</code><br><code>tracestate</code></p></div></div>
+<div class="flow"><div class="node">Browser</div><div class="arr">→</div><div class="node">API Gateway</div><div class="arr">→</div><div class="node">Service A</div><div class="arr">→</div><div class="node">DB</div><div class="arr">→</div><div class="node">Service B</div></div>
+</div><aside class="speaker-note">W3C Trace Context 讓不同工具、服務都能沿同一個 trace 傳遞 context。</aside></section>
+
+<section class="slide" data-title="OTel Semconv"><div class="content">
+<div class="eyebrow">OpenTelemetry</div><h2>不只 trace：還有共同的<strong style="color:var(--cyan)">語義</strong></h2>
+<div class="grid4"><div class="card"><h3>Traces</h3><p>operation / parent-child</p></div><div class="card"><h3>Metrics</h3><p>可聚合的量化訊號</p></div><div class="card"><h3>Logs</h3><p>事件與診斷細節</p></div><div class="card"><h3>Profiles</h3><p>profiling semantic conventions</p></div></div>
+<div class="callout">HTTP、DB、messaging、feature flags 等都有 semantic conventions；跨語言 / 跨團隊不用各自發明欄位。</div>
+</div><aside class="speaker-note">OpenTelemetry semantic conventions 已涵蓋 traces、metrics、logs、profiles、resources；但各 category 的穩定度不一定相同。</aside></section>
+
+<section class="slide" data-title="Browser Caveat"><div class="content">
+<div class="eyebrow">一個 2026 還要注意的現況</div><h2>Browser OTel instrumentation<br>仍是<strong style="color:var(--amber)"> experimental / mostly unspecified</strong></h2>
+<div class="split"><div class="answer"><div class="q">Frontend</div><div class="a">成熟 <span class="term" tabindex="0" data-tip="Real User Monitoring">RUM</span> / Product SDK</div><p class="muted">Events · Web Vitals · Replay · Errors</p></div><div class="answer"><div class="q">Backend</div><div class="a">OpenTelemetry</div><p class="muted">Trace context · spans · metrics · logs</p></div></div>
+<div class="callout">透過 trace context 串起兩側，不必為了「全 OTel」硬把 Browser 端所有 telemetry 自己做。</div>
+</div><aside class="speaker-note">這是 OpenTelemetry 官方目前的警告。Frontend 與 backend 可以不同 SDK，但用 context/correlation 接起來。</aside></section>
+
+<section class="slide" data-title="App Tools"><div class="content">
+<div class="eyebrow">App / Product tools</div><h2>常見工具，各自回答不同問題</h2>
+<div class="grid4"><div class="card tool accent-cyan"><div class="name">PostHog</div><div class="use">analytics · replay · flags · experiments</div><span class="pill free">free tier</span></div><div class="card tool accent-blue"><div class="name">Firebase</div><div class="use">Analytics · Performance · Crashlytics</div><span class="pill free">no-cost products</span></div><div class="card tool accent-rose"><div class="name">Sentry</div><div class="use">errors · performance · replay</div></div><div class="card tool accent-green"><div class="name">Countly Lite</div><div class="use">product analytics</div><span class="pill oss">OSS · self-host</span></div></div>
+</div><aside class="speaker-note">不是互斥選項。Product analytics、client perf/crash、session replay 常會有重疊。</aside></section>
+
+<section class="slide" data-title="O11y Stacks"><div class="content">
+<div class="eyebrow">Backend / Platform tools</div><h2>資料管線、儲存、UI 要分開看</h2>
+<div class="grid3"><div class="card accent-blue"><h3>Grafana ecosystem</h3><p>Grafana · Tempo · Loki · Prometheus/Mimir · Faro</p></div><div class="card accent-amber"><h3>Elastic</h3><p>APM / OTel / RUM → Elasticsearch → Kibana</p></div><div class="card accent-green"><h3>OSS all-in-one</h3><p>SigNoz<br>ClickStack / HyperDX<br>OpenReplay</p></div></div>
+<div class="callout">OpenTelemetry 解 instrumentation / collection / export；它本身不是 storage 或 dashboard。</div>
+</div><aside class="speaker-note">如果讀書會要 demo：SigNoz 或 ClickStack 比自己拼很多 backend 更省時間；Web replay 可看 OpenReplay。</aside></section>
+
+<section class="slide section" data-title="RecSys"><div class="content">
+<div class="eyebrow">Part III · Recommendation</div><h1>把 13.1 / 13.2<br>放回我們的場景</h1>
+</div><aside class="speaker-note">接下來把書的 Client / Server / Join 直接映射到推薦系統。</aside></section>
+
+<section class="slide" data-title="Rec Flow"><div class="content">
+<div class="eyebrow">Recommendation · End-to-end</div><h2>一個 Feed request 其實跨很多視角</h2>
+<div class="flow"><div class="node">App</div><div class="arr">→</div><div class="node">Feed API</div><div class="arr">→</div><div class="node">Candidate</div><div class="arr">→</div><div class="node">Features</div><div class="arr">→</div><div class="node">Ranking</div><div class="arr">→</div><div class="node">Impression</div><div class="arr">→</div><div class="node">Click</div></div>
+<div class="grid3"><div class="card"><h3>Product</h3><p>impression · click · dwell</p></div><div class="card"><h3>System</h3><p>request · trace · latency</p></div><div class="card"><h3>Model</h3><p>candidate · feature · score · version</p></div></div>
+</div><aside class="speaker-note">這裡就是原書說的「user 所見」+「system 原因」。推薦系統多了一層 model lineage / scoring context。</aside></section>
+
+<section class="slide" data-title="IDs"><div class="content">
+<div class="eyebrow">Recommendation · IDs</div><h2>今天通常不是「一個萬能 join key」</h2>
+<div class="grid3"><div class="card"><h3>session_id</h3><p>user journey</p></div><div class="card"><h3>trace_id</h3><p>causal path</p></div><div class="card"><h3>feed_request_id</h3><p>serving request</p></div><div class="card"><h3>impression_id</h3><p>曝光 attribution</p></div><div class="card"><h3>experiment_id + variant</h3><p>實驗歸因</p></div><div class="card"><h3>model_version</h3><p>model lineage</p></div></div>
+</div><aside class="speaker-note">trace_id 解系統 causal chain，但不應承擔所有產品與實驗語義。</aside></section>
+
+<section class="slide" data-title="Debug CTR"><div class="content">
+<div class="eyebrow">Experiment Debug</div><h2>CTR -5%，到底是哪裡出問題？</h2>
+<div class="grid4"><div class="card"><h3>Client</h3><p>曝光埋點掉了？</p></div><div class="card"><h3>Serving</h3><p>timeout / fallback？</p></div><div class="card"><h3>Model</h3><p>ranking 真的變差？</p></div><div class="card"><h3>Experiment</h3><p>assignment / join 錯？</p></div></div>
+<div class="quote">沒有 instrumentation，實驗結果只能告訴你「變了」，不會告訴你「為什麼」。</div>
+</div><aside class="speaker-note">這張最適合把書的價值拉回你們平常真的會 debug 的事情。</aside></section>
+
+<section class="slide section" data-title="AI"><div class="content">
+<div class="eyebrow">Part IV · AI</div><h1>LLM / Agent<br>多了哪些 telemetry？</h1>
+</div><aside class="speaker-note">最後再進 AI，讓它成為同一條 instrumentation 演進線，而不是獨立話題。</aside></section>
+
+<section class="slide" data-title="LLM"><div class="content">
+<div class="eyebrow">LLM Observability</div><h2>HTTP 200 不代表答案是好的</h2>
+<div class="grid4"><div class="card"><h3>Model</h3><p>provider · model · prompt version</p></div><div class="card"><h3>Latency</h3><p><span class="term" tabindex="0" data-tip="Time to First Token：request 到第一個 token 出現的時間。">TTFT</span> · total latency · retry</p></div><div class="card"><h3>Usage</h3><p>input/output tokens · cost</p></div><div class="card"><h3>Context</h3><p>retrieval · tool · cache</p></div></div>
+<div class="diagram"><pre class="trace">total 20s
+├─ retrieval     0.8s
+├─ model TTFT    2.3s
+├─ generation   12.1s
+├─ tool          3.9s
+└─ retry         0.9s</pre></div>
+</div><aside class="speaker-note">傳統 APM 看 request 成功與 latency；LLM 還要把 retrieval、generation、tools、retry 拆開。</aside></section>
+
+<section class="slide" data-title="Agent"><div class="content">
+<div class="eyebrow">Agent Observability</div><h2>最小單位從 request 變成<strong style="color:var(--purple)"> workflow tree</strong></h2>
+<div class="flow"><div class="node">workflow</div><div class="arr">→</div><div class="node">agent</div><div class="arr">→</div><div class="node">plan</div><div class="arr">→</div><div class="node">retrieval</div><div class="arr">→</div><div class="node">tool</div><div class="arr">→</div><div class="node">handoff</div><div class="arr">→</div><div class="node">guardrail</div></div>
+<div class="grid2"><div class="card tool"><div class="name">Langfuse</div><div class="use">traces · prompts · datasets · evals</div><span class="pill oss">OSS · self-host</span></div><div class="card tool"><div class="name">Phoenix</div><div class="use">OTel tracing · eval · datasets · experiments</div><span class="pill oss">open source</span></div></div>
+</div><aside class="speaker-note">Agent bug 常發生在選錯 tool、retrieval、handoff、retry loop，而不是最後一次 model call。</aside></section>
+
+<section class="slide" data-title="Eval"><div class="content">
+<div class="eyebrow">AI 的新差異</div><h2>Observability ≠ Evaluation</h2>
+<div class="split"><div class="answer" style="background:rgba(96,165,250,.08)"><div class="q">Observability</div><div class="a">What happened?</div><p class="muted">慢在哪、tool 是否失敗、token 花多少。</p></div><div class="answer" style="background:rgba(110,231,183,.08)"><div class="q">Evaluation</div><div class="a">Was it good?</div><p class="muted">correctness · groundedness · task success · user feedback</p></div></div>
+</div><aside class="speaker-note">這是 AI 系統真正多出來的一個維度：健康不等於品質。</aside></section>
+
+<section class="slide" data-title="Takeaway"><div class="content">
+<div class="eyebrow">Takeaway</div><h2>六年後，核心其實沒變</h2>
+<p class="big">知道<strong style="color:var(--cyan)">使用者經歷什麼</strong>，<br>知道<strong style="color:var(--blue)">系統為什麼這樣做</strong>，<br>而且兩邊<strong style="color:var(--green)">能被可靠地串起來</strong>。</p>
+<div class="flow"><div class="node">Book: client + server + join</div><div class="arr">→</div><div class="node">2026: events + RUM + traces + eval</div></div>
+<p class="foot">References: <a href="./SOURCES.md">SOURCES.md</a></p>
+</div><aside class="speaker-note">工具會換，但 instrumentation 的目的沒有換。</aside></section>
+
+</div>
+<button class="note-toggle" id="noteBtn" title="Toggle speaker notes">N · Notes</button>
+<div class="controls"><button id="prev">←</button><span class="counter" id="counter"></span><button id="next">→</button></div>
+<div class="progress" id="progress"></div>
+<script>
+const slides=[...document.querySelectorAll('.slide')];let index=0,notes=false;const counter=document.getElementById('counter'),progress=document.getElementById('progress');function clamp(n){return Math.max(0,Math.min(slides.length-1,n))}function render(){index=clamp(index);slides.forEach((s,i)=>{s.classList.toggle('active',i===index);const note=s.querySelector('.speaker-note');if(note)note.classList.toggle('show',i===index&&notes)});counter.textContent=`${index+1} / ${slides.length}`;progress.style.width=`${((index+1)/slides.length)*100}%`;history.replaceState(null,'',`#${index+1}`)}function go(n){index=n;render()}function next(){go(index+1)}function prev(){go(index-1)}function toggleNotes(){notes=!notes;render()}document.getElementById('next').onclick=next;document.getElementById('prev').onclick=prev;document.getElementById('noteBtn').onclick=toggleNotes;document.addEventListener('keydown',e=>{if(['ArrowRight',' ','PageDown'].includes(e.key)){e.preventDefault();next()}else if(['ArrowLeft','PageUp'].includes(e.key)){e.preventDefault();prev()}else if(e.key.toLowerCase()==='n'){toggleNotes()}else if(e.key==='Home'){go(0)}else if(e.key==='End'){go(slides.length-1)}});const hash=parseInt(location.hash.replace('#',''),10);if(Number.isFinite(hash))index=hash-1;render();
+</script>
+</body></html>
