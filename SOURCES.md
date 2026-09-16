@@ -1,8 +1,15 @@
 # Sources
 
-The deck keeps URLs out of the main slides to reduce visual noise. These are the official / primary references used for the 2026 update.
+Official and primary references for the Chapter 13 study deck and the 2026 comparison.
 
-## OpenTelemetry / tracing
+## Book basis
+
+- 《關鍵迭代：可信賴的線上對照實驗》Chapter 13, pp.153–156.
+- 13.1：Client-side / server-side instrumentation、client logging limitations、clock synchronization.
+- 13.2：multi-source logs、shared join identifiers、common fields / formats.
+- 13.3：instrumentation culture、instrument during development、monitor telemetry quality.
+
+## OpenTelemetry
 
 - OpenTelemetry — What is OpenTelemetry?  
   https://opentelemetry.io/docs/what-is-opentelemetry/
@@ -11,7 +18,7 @@ The deck keeps URLs out of the main slides to reduce visual noise. These are the
 - OpenTelemetry GenAI semantic conventions  
   https://github.com/open-telemetry/semantic-conventions-genai
 
-Key points used in the deck: OpenTelemetry is a vendor-neutral framework for generating, collecting and exporting traces, metrics and logs; it is not itself the storage/visualization backend. It originated from the merger of OpenTracing and OpenCensus.
+OpenTelemetry is a vendor-neutral framework and toolkit for generating, collecting and exporting traces, metrics and logs. It is not itself an observability backend.
 
 ## App / product instrumentation
 
@@ -20,28 +27,28 @@ Key points used in the deck: OpenTelemetry is a vendor-neutral framework for gen
   https://firebase.google.com/docs/analytics
 - Firebase Performance Monitoring  
   https://firebase.google.com/docs/perf-mon
-- Firebase pricing / no-cost products  
+- Firebase screen rendering traces  
+  https://firebase.google.com/docs/perf-mon/screen-traces
+- Firebase pricing  
   https://firebase.google.com/pricing
 
-Performance Monitoring automatically covers app startup, screen rendering and HTTP network requests on supported native platforms; Firebase lists Analytics, Crashlytics and Performance Monitoring among its no-cost products.
-
 ### PostHog
-- PostHog product / pricing overview  
+- PostHog  
   https://posthog.com/
 
-PostHog currently combines product analytics, session replay, error tracking, feature flags and experiments, with usage-based free tiers. Its code is public/open-core, but the company describes cloud as its primary deployment model and self-hosting as comparatively complex.
+Product analytics, session replay, error tracking, feature flags and experiments.
 
 ### Sentry
 - Mobile Session Replay GA  
   https://sentry.io/changelog/session-replay-for-mobile-is-now-generally-available/
 
-Sentry's mobile replay supports iOS, Android, Flutter and React Native and correlates replay with errors, logs and network context.
-
-### Countly
+### Countly Lite
 - Countly Lite  
   https://countly.com/lite
+- Countly licensing FAQ  
+  https://support.countly.com/hc/en-us/articles/360037501312-Countly-Licensing-FAQ
 
-Countly Lite is an open-source, self-hosted product analytics option covering mobile, web and desktop environments.
+Open-source, self-hosted product analytics covering mobile, web and desktop.
 
 ## Frontend / Web observability
 
@@ -50,20 +57,26 @@ Countly Lite is an open-source, self-hosted product analytics option covering mo
   https://grafana.com/oss/faro/
 - Grafana Cloud Frontend Observability  
   https://grafana.com/docs/grafana-cloud/observe-and-act/monitor-applications/frontend-observability/
-- Supported environments  
-  https://grafana.com/docs/grafana-cloud/observe-and-act/monitor-applications/frontend-observability/introduction/supported-environments/
 
-Faro is an open-source browser RUM SDK that collects performance metrics, logs, exceptions, events and traces. Grafana documents React Native and other non-browser JavaScript environments as unsupported for Faro.
+Open-source browser RUM SDK for performance metrics, logs, exceptions, events and traces.
+
+### OpenReplay
+- OpenReplay documentation  
+  https://docs.openreplay.com/
+
+Open-source, self-hosted session replay and frontend debugging stack.
 
 ## Backend observability stacks
 
 ### Grafana ecosystem
 - Grafana Tempo  
   https://grafana.com/oss/tempo/
+- Grafana Loki  
+  https://grafana.com/oss/loki/
+- Grafana Mimir  
+  https://grafana.com/oss/mimir/
 - Grafana Faro  
   https://grafana.com/oss/faro/
-
-The deck uses the common Grafana-stack mental model: Grafana for visualization/exploration, Tempo for traces, Loki for logs, Prometheus/Mimir for metrics, and Faro for browser RUM.
 
 ### Elastic / Kibana
 - OpenTelemetry with Elastic APM  
@@ -71,41 +84,32 @@ The deck uses the common Grafana-stack mental model: Grafana for visualization/e
 - Start with OpenTelemetry in Elastic  
   https://www.elastic.co/docs/solutions/observability/get-started/opentelemetry/start-with-otel
 
-Elastic accepts OpenTelemetry data over OTLP. As of 2026, Elastic's OTel-native browser RUM remains limited for production use; Elastic recommends its classic browser agent for production RUM while EDOT Browser remains Technical Preview.
+Elastic supports OpenTelemetry / OTLP ingestion and visualizes observability data through Kibana.
 
 ### SigNoz
 - What is SigNoz?  
   https://signoz.io/docs/what-is-signoz/
 
-SigNoz is an open-source OpenTelemetry-based observability tool for logs, metrics, traces and exceptions.
+Open-source OpenTelemetry-based observability platform for logs, metrics, traces and exceptions.
 
 ### ClickStack / HyperDX
 - ClickStack announcement  
   https://clickhouse.com/blog/clickstack-a-high-performance-oss-observability-stack-on-clickhouse
-- ClickStack architecture / Next.js example  
-  https://clickhouse.com/blog/instrumenting-your-app-with-otel-clickstack
-- Browser RUM update (May 2026)  
-  https://clickhouse.com/blog/whats-new-in-clickstack-may-2026
 
-ClickStack combines an OpenTelemetry Collector, ClickHouse and the HyperDX/ClickStack UI. It supports logs, metrics, traces and session replay; recent releases add an out-of-the-box Browser RUM dashboard.
+Open-source observability stack built on ClickHouse, covering logs, metrics, traces and session replay.
 
 ## LLM / Agent observability
 
 ### Langfuse
+- Langfuse  
+  https://langfuse.com/
 - Observability / tracing  
   https://langfuse.com/docs/observability/overview
-- Evaluation overview  
-  https://langfuse.com/docs/evaluation/overview
 
-Langfuse is open source and self-hostable, and models LLM/agent execution as traces with prompts, responses, retrieval, tools, token usage, latency and evaluation scores.
+Tracing, prompts, datasets, experiments and evaluations for LLM / agent applications.
 
 ### Arize Phoenix
 - Phoenix GitHub repository  
   https://github.com/Arize-ai/phoenix
 
-Phoenix is an open-source AI observability/evaluation platform with OpenTelemetry-based tracing, evaluations, datasets and experiments.
-
-## Book basis
-
-- 《關鍵迭代：可信賴的線上對照實驗》Chapter 13, pp.153–156 — the four-page excerpt used in this study session.
-- The deck intentionally preserves the chapter's original framing first: client-side instrumentation, server-side instrumentation, multi-source log joins, and instrumentation culture. The modern tooling sections are an external 2026 update, not claims made by the book.
+Open-source AI observability and evaluation platform with OpenTelemetry-based tracing, evaluations, datasets and experiments.
